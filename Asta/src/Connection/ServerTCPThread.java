@@ -59,7 +59,6 @@ public class ServerTCPThread extends Thread{
 				switch(sceltaMenu) {
 				case "1":
 					//Vuole partecipare ad un asta, vengono mostrate quelle disponibili
-					//Stampa delle aste disponibili -> MATTU DEVE FINIRE DI CORREGGERE DELLE ROBE, NON STAMPA PERCHE' NON CI STANNO ASTE
 					List<Asta> aste = resources.getCurrentGambits();
 					for(int i=0;i<aste.size();i++) {
 						if(Client.ricevuto) {

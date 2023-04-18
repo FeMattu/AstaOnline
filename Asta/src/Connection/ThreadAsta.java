@@ -1,7 +1,13 @@
 package Connection;
 
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 
 import gambit.Asta;
 import gambit.GestisciAste;
@@ -43,10 +49,8 @@ public class ThreadAsta extends Thread{
      */
     public void run(){
         super.run();
-        //settaggio data e ora inizio asta
-        asta.setDataOra_inizio(Date.valueOf(LocalDate.now()));
-        
-        
+        //settaggio data e ora inizio asta       
+        asta.setDataOra_inizio(Timestamp.valueOf(LocalDateTime.now()));
         
         //run .....
         //per il test predno un client a caso
@@ -59,7 +63,7 @@ public class ThreadAsta extends Thread{
         
         //fine asta
         //aggiunta data e ora finea asta
-        asta.setDataOra_fine(Date.valueOf(LocalDate.now()));
+        asta.setDataOra_fine(Timestamp.valueOf(LocalDateTime.now()));
         resources.getCurrentGambits().remove(asta);
         resources.addAstaIntoDB(asta);
     }

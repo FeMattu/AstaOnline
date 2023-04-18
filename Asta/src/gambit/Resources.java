@@ -8,6 +8,8 @@ import java.util.List;
 import javax.naming.directory.InvalidAttributesException;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Classe thread-safe in cui vengono gestite tutte le risorse del server, inoltre si interfaccia con il DBMS.
@@ -70,6 +72,10 @@ public class Resources {
 	 */
 	public String getUser() {
 		return user;
+	}
+	
+	private String transformDate(Date date) {
+		return null;
 	}
 
 
@@ -166,8 +172,8 @@ public class Resources {
 					}
 					asteDatabase.add(new Asta(
 							rs.getInt("id_asta"),
-							rs.getDate("dataOra_inzio"),
-							rs.getDate("dataOra_fine"),
+							rs.getTimestamp("dataOra_inzio"),
+							rs.getTimestamp("dataOra_fine"),
 							rs.getString("indirizzo_ip"),
 							vincitore,
 							prodotto));
@@ -189,8 +195,8 @@ public class Resources {
 	public boolean addAstaIntoDB(Asta asta) {
 		String query = "INSERT INTO Aste VALUES ('"
 				+ asta.getId_asta() +"','"
-				+ asta.getDataOra_inizio().toString() +"','"
-				+ asta.getDataOra_fine().toString() +"','"
+				+ asta.getDataOra_inizio() +"','"
+				+ asta.getDataOra_fine() +"','"
 				+ asta.getVincitore().getUSERNAME() +"','"
 				+ asta.getProdotto().getID_PRODOTTO() +"','"
 				+ asta.getIp() + "')";
@@ -251,8 +257,8 @@ public class Resources {
 				}
 				asta = new Asta(
 						rs.getInt("id_asta"),
-						rs.getDate("dataOra_inzio"),
-						rs.getDate("dataOra_fine"),
+						rs.getTimestamp("dataOra_inzio"),
+						rs.getTimestamp("dataOra_fine"),
 						rs.getString("indirizzo_ip"),
 						vincitore,
 						prodotto);
@@ -298,7 +304,6 @@ public class Resources {
 	 */
 	public LinkedList<Cliente> getClienti(){	
 		LinkedList<Cliente> clienti = new LinkedList<Cliente>();
-		int nrClienti=0;
 		
 		Statement sta = null;
 		try {
@@ -312,7 +317,6 @@ public class Resources {
 			try {
 				ResultSet rs = sta.executeQuery("SELECT * FROM Clienti;");
 				while(rs.next()) {
-					nrClienti++;
 					clienti.add(new Cliente(
 							rs.getString("UserName"),
 							rs.getString("nome"),
@@ -322,17 +326,11 @@ public class Resources {
 							rs.getString("password"),
 							rs.getString("email")));
 				}
-				if(nrClienti>0) {
-					System.out.println("numero clienti: "+nrClienti);
-					return clienti;
-				}else {
-					System.out.println("non sono presenti clienti");
-				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			return null;
+			return clienti;
 		}
 	}
 	
@@ -342,7 +340,6 @@ public class Resources {
 	 */
 	public LinkedList<Cliente> getVenditori() {
 		LinkedList<Cliente> venditori = new LinkedList<Cliente>();
-		int nrVenditori=0;
 		String query = "SELECT UserName,Clienti.nome,cognome,data_nascita,residenza,password,email "
 				+ "FROM Prodotti, Clienti "
 				+ "WHERE Prodotti.venditore = Clienti.UserName "
@@ -360,7 +357,6 @@ public class Resources {
 			try {
 				ResultSet rs = sta.executeQuery(query);
 				while(rs.next()) {
-					nrVenditori++;
 					venditori.add(new Cliente(
 							rs.getString("UserName"),
 							rs.getString("nome"),
@@ -370,17 +366,11 @@ public class Resources {
 							rs.getString("password"),
 							rs.getString("email")));
 				}
-				if(nrVenditori>0) {
-					System.out.println("numero venditori: "+nrVenditori);
-					return venditori;
-				}else {
-					System.out.println("non sono presenti venditori");
-				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			return null;
+			return venditori;
 		}
 	}
 	
@@ -476,7 +466,6 @@ public class Resources {
 	public LinkedList<Prodotto> getProdotti() {
 		LinkedList<Prodotto> prodotti = new LinkedList<Prodotto>();
 		LinkedList<Cliente> venditori = getVenditori();
-		int numeroProdottiAggiunti = 0;
 		String query = "SELECT * "
 				+ "FROM Prodotti,Categorie "
 				+ "WHERE Prodotti.id_categoria = Categorie.id_categoria "
@@ -502,7 +491,6 @@ public class Resources {
 							break;
 						}
 					}
-					numeroProdottiAggiunti++;
 					prodotti.add(new Prodotto(
 							rs.getInt("id_prodotto"), 
 							rs.getString("nome"), 
@@ -510,13 +498,9 @@ public class Resources {
 							rs.getFloat("prezzoDiBase"), 
 							rs.getBoolean("venduto"), 
 							venditore,
-							rs.getDate("dataOra_aggiunta"),
+							rs.getTimestamp("dataOra_aggiunta"),
 							rs.getString("categoria")));	
 				}
-				if(numeroProdottiAggiunti > 0)
-					System.out.println("Numero prodotti aggiunti = " + numeroProdottiAggiunti);
-				else
-					System.out.println("Non ci sono prodotti nuovi da aggiungere.");
 			}
 			catch(Exception e) {
 				e.printStackTrace();
@@ -603,7 +587,7 @@ public class Resources {
 						rs.getFloat("prezzoDiBase"), 
 						rs.getBoolean("venduto"), 
 						venditore,
-						rs.getDate("dataOra_aggiunta"),
+						rs.getTimestamp("dataOra_aggiunta"),
 						rs.getString("categoria"));	
 				
 				if(sta.executeUpdate(queryRimozione) > 0)
@@ -666,7 +650,7 @@ public class Resources {
 					}
 					offerte.add(new Offerta(
 							rs.getInt("id_offerta"),
-							rs.getDate("DataOra_offerta"),
+							rs.getTimestamp("DataOra_offerta"),
 							rs.getFloat("offerta"),
 							offerente,
 							asta));
@@ -711,7 +695,7 @@ public class Resources {
 					}
 					offerte.add(new Offerta(
 							rs.getInt("id_offerta"),
-							rs.getDate("DataOra_offerta"),
+							rs.getTimestamp("DataOra_offerta"),
 							rs.getFloat("offerta"),
 							cliente,
 							asta));
@@ -754,7 +738,7 @@ public class Resources {
 					}
 					offerte.add(new Offerta(
 							rs.getInt("id_offerta"),
-							rs.getDate("DataOra_offerta"),
+							rs.getTimestamp("DataOra_offerta"),
 							rs.getFloat("offerta"),
 							offerente,
 							asta));
@@ -837,7 +821,7 @@ public class Resources {
 				}
 				offerta = new Offerta(
 						rs.getInt("id_offerta"),
-						rs.getDate("dataOra_offerta"),
+						rs.getTimestamp("dataOra_offerta"),
 						rs.getFloat("offerta"),
 						offerente,
 						asta);

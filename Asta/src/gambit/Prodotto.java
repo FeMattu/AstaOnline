@@ -1,6 +1,7 @@
 package gambit;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import javax.naming.directory.InvalidAttributesException;
 
@@ -11,7 +12,7 @@ public class Prodotto {
     private String descrizione;
     private float prezzoDiBase;
     private boolean venduto;
-    private Date dataOra_aggiunta;
+    private Timestamp dataOra_aggiunta;
     private String categoria;
     private Cliente venditore;
     
@@ -27,7 +28,7 @@ public class Prodotto {
      * @throws InvalidAttributesException
      */
     public Prodotto(int ID_PRODOTTO, String nome, String descrizione, float prezzoDiBase, boolean venduto,
-            Cliente venditore, Date dataOra_aggiunta, String categoria) throws InvalidAttributesException {
+            Cliente venditore, Timestamp dataOra_aggiunta, String categoria) throws InvalidAttributesException {
         this.ID_PRODOTTO = ID_PRODOTTO;
         this.nome = nome;
         this.descrizione = descrizione;
@@ -64,7 +65,7 @@ public class Prodotto {
         this.venduto = venduto;
     }
 
-    public Date getDataOra_aggiunta() {
+    public Timestamp getDataOra_aggiunta() {
         return dataOra_aggiunta;
     }
 

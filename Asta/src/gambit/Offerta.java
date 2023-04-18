@@ -1,15 +1,16 @@
 package gambit;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Offerta {
 	private int id_offerta;
-	private Date DataOraOfferta;
+	private Timestamp DataOraOfferta;
 	private float offerta;
 	private Cliente offerente;
 	private Asta asta;
 		
-	public Offerta(int id_offerta, Date dataOraOfferta, float offerta, Cliente offerente, Asta asta) {
+	public Offerta(int id_offerta, Timestamp dataOraOfferta, float offerta, Cliente offerente, Asta asta) {
 		super();
 		this.id_offerta = id_offerta;
 		DataOraOfferta = dataOraOfferta;
@@ -22,7 +23,7 @@ public class Offerta {
 		return id_offerta;
 	}
 
-	public Date getDataOraOfferta() {
+	public Timestamp getDataOraOfferta() {
 		return DataOraOfferta;
 	}
 

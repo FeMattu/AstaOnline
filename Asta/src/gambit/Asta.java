@@ -1,12 +1,13 @@
 package gambit;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Asta {
 
 	private int id_asta;
-	private Date dataOra_inizio;
-	private Date dataOra_fine;	
+	private Timestamp dataOra_inizio;
+	private Timestamp dataOra_fine;	
 	private String ip;
 	private Cliente vincitore;
 	private Prodotto prodotto;
@@ -21,7 +22,7 @@ public class Asta {
 		this.ip = ip;
 	}
 	
-	public Asta(int id_asta, Date dataOra_inizio, Date dataOra_fine, String ip, Cliente vincitore,
+	public Asta(int id_asta, Timestamp dataOra_inizio, Timestamp dataOra_fine, String ip, Cliente vincitore,
 			Prodotto prodotto) {
 		super();
 		this.id_asta = id_asta;
@@ -37,19 +38,19 @@ public class Asta {
 		return id_asta;
 	}
 
-	public Date getDataOra_inizio() {
+	public Timestamp getDataOra_inizio() {
 		return dataOra_inizio;
 	}
 
-	public Date getDataOra_fine() {
+	public Timestamp getDataOra_fine() {
 		return dataOra_fine;
 	}
 	
-	public void setDataOra_inizio(Date dataOra_inizio) {
+	public void setDataOra_inizio(Timestamp dataOra_inizio) {
 		this.dataOra_inizio = dataOra_inizio;
 	}
 
-	public void setDataOra_fine(Date dataOra_fine) {
+	public void setDataOra_fine(Timestamp dataOra_fine) {
 		this.dataOra_fine = dataOra_fine;
 	}
 

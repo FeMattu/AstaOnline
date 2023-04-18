@@ -1,33 +1,26 @@
 package Connection;
 
-import java.net.MulticastSocket;
-import java.sql.Date;
-
 import gambit.Asta;
 import gambit.GestisciAste;
-import gambit.Prodotto;
 import gambit.Resources;
 
 
 public class ThreadAsta extends Thread{
 
-    private final int ID_ASTA;
-    private Date DataOra_inizio;
-    private Date DataOra_fine;
-    private String multicastIP;
-    private String porta;
-    private MulticastSocket socket;
+    //private final int ID_ASTA;
+    //private Date DataOra_inizio;
+    //private Date DataOra_fine;
+    //private String multicastIP;
+    //private String porta;
+    //private MulticastSocket socket;
+    //private Prodotto prodotto;
     private Resources r;
-    private Prodotto prodotto;
     private Asta asta;
     
 
-    public ThreadAsta(int ID, String multicastIP, Prodotto prodotto, Resources r, Asta asta){
-        this.ID_ASTA=ID;
-        this.multicastIP=multicastIP;
-        this.prodotto=prodotto;
-        this.r = r;
+    public ThreadAsta(Asta asta, Resources r){
         this.asta = asta;
+        this.r = r;
     }
 
     public void run(){

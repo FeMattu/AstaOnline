@@ -8,6 +8,15 @@ import java.net.UnknownHostException;
 import gambit.GestisciAste;
 import gambit.Resources;
 
+/**
+ * <b>Server class</b>
+ * @author <i>Federico Mattucci<br>
+ * 			  Tommaso Giannecchini<br>
+ * 			  Federico Massanti<br>
+ * 			  Lorenzo Rapposelli<br>
+ * 			  Giacomo Diridoni</i>
+ *
+ */
 public class Server {
 
 	static Resources resources = null;

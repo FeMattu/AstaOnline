@@ -4,7 +4,15 @@ import gambit.Asta;
 import gambit.GestisciAste;
 import gambit.Resources;
 
-
+/**
+ * <b>ThreadAsta class</b>
+ * @author <i>Federico Mattucci<br>
+ * 			  Tommaso Giannecchini<br>
+ * 			  Federico Massanti<br>
+ * 			  Lorenzo Rapposelli<br>
+ * 			  Giacomo Diridoni</i>
+ *
+ */
 public class ThreadAsta extends Thread{
 
     //private final int ID_ASTA;
@@ -17,12 +25,19 @@ public class ThreadAsta extends Thread{
     private Resources r;
     private Asta asta;
     
-
+    /**
+     * <b>ThreadAsta constructor</b>
+     * @param asta -> asta istance
+     * @param r -> resources istance
+     */
     public ThreadAsta(Asta asta, Resources r){
         this.asta = asta;
         this.r = r;
     }
 
+    /**
+     * <b>Run method for ThreadAsta class</b>
+     */
     public void run(){
         super.run();
         //prodotto.toString();

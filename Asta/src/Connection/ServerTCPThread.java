@@ -10,6 +10,15 @@ import java.util.List;
 import gambit.Asta;
 import gambit.Resources;
 
+/**
+ * <b>ServerTCPThread class</b>
+ * @author <i>Federico Mattucci<br>
+ * 			  Tommaso Giannecchini<br>
+ * 			  Federico Massanti<br>
+ * 			  Lorenzo Rapposelli<br>
+ * 			  Giacomo Diridoni</i>
+ *
+ */
 public class ServerTCPThread extends Thread{
 	
 	private Socket socket;
@@ -18,7 +27,11 @@ public class ServerTCPThread extends Thread{
 	private Resources resources;
 	static boolean inviato;
 	
-	
+	/**
+	 * <b>ServerTCPThread constructor</b>
+	 * @param socket -> socket used for the connection
+	 * @param resources -> resources istance 
+	 */
     public ServerTCPThread(Socket socket, Resources resources){
         this.socket=socket;
         this.resources=resources;
@@ -31,6 +44,9 @@ public class ServerTCPThread extends Thread{
 		}
     }
     
+    /**
+     * <b>Run method for ServerTCPThread class</b>
+     */
     @Override
     public void run() {
     	// TODO Auto-generated method stub

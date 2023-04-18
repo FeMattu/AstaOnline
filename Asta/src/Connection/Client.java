@@ -10,7 +10,15 @@ import java.util.Scanner;
 
 import gambit.Cliente;
 
-
+/**
+ * <b>Client class</b>
+ * @author <i>Federico Mattucci<br>
+ * 			  Tommaso Giannecchini<br>
+ * 			  Federico Massanti<br>
+ * 			  Lorenzo Rapposelli<br>
+ * 			  Giacomo Diridoni</i>
+ *
+ */
 public class Client {
 	
 	private static Socket socket;
@@ -48,6 +56,9 @@ public class Client {
 
 	}
 	
+	/**
+	 * <b>Start of the connection</b> -> defined <i>socket, reader, writer</i> istances
+	 */
 	private static void serverConnection() {
 		try {
 			socket = new Socket("localhost", 5000);

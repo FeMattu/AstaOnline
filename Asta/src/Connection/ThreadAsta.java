@@ -8,6 +8,7 @@ import gambit.GestisciAste;
 import gambit.Prodotto;
 import gambit.Resources;
 
+
 public class ThreadAsta extends Thread{
 
     private final int ID_ASTA;
@@ -21,17 +22,18 @@ public class ThreadAsta extends Thread{
     private Asta asta;
     
 
-    public ThreadAsta(Asta asta, Resources r){
-    	super();
-        this.asta = asta;
-    	this.ID_ASTA = asta.getId_asta();
+    public ThreadAsta(int ID, String multicastIP, Prodotto prodotto, Resources r, Asta asta){
+        this.ID_ASTA=ID;
+        this.multicastIP=multicastIP;
+        this.prodotto=prodotto;
         this.r = r;
+        this.asta = asta;
     }
 
     public void run(){
         super.run();
-        prodotto.toString();
-        System.out.println(prodotto);
+        //prodotto.toString();
+        //System.out.println(prodotto);
         
         
         // Tutte le volte che un'asta termina, il contatore delle aste runtime viene aggiornato. Il valore false dice che devo diminuire il numero delle aste runti

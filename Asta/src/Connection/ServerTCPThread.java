@@ -5,10 +5,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.util.LinkedList;
+import java.util.List;
 
 import gambit.Asta;
-import gambit.GestisciAste;
 import gambit.Resources;
 
 public class ServerTCPThread extends Thread{
@@ -17,6 +16,8 @@ public class ServerTCPThread extends Thread{
 	private BufferedReader reader;
 	private DataOutputStream writer;
 	private Resources resources;
+	static boolean inviato;
+	
 	
     public ServerTCPThread(Socket socket, Resources resources){
         this.socket=socket;
@@ -36,24 +37,38 @@ public class ServerTCPThread extends Thread{
     	super.run();
     	try {
 			writer.writeBytes("Connessione effettuata con successo\n");
-			String scelta;
+			String sceltaMenu;
 			do {
-				scelta = reader.readLine();
-				switch(scelta) {
+				sceltaMenu = reader.readLine();
+				switch(sceltaMenu) {
 				case "1":
 					//Vuole partecipare ad un asta, vengono mostrate quelle disponibili
-					//Stampa delle aste disponibili -> DEVE FARLO LATO CLIENT, NON RIESCO A TROVARE LA MANIERA PER FARLO
-					Server.gestioneAste.run();
+					//Stampa delle aste disponibili -> MATTU DEVE FINIRE DI CORREGGERE DELLE ROBE, NON STAMPA PERCHE' NON CI STANNO ASTE
+					List<Asta> aste = resources.getCurrentGambits();
+					for(int i=0;i<aste.size();i++) {
+						if(Client.ricevuto) {
+							writer.writeBytes("ID: "+aste.get(i).getId_asta()+"\tProdotto: "+aste.get(i).getProdotto()+"\n");
+							inviato = true;
+						}
+						inviato = false;
+					}
+					String sceltaAsta = reader.readLine();
+					System.out.println(sceltaAsta);
 					break;
 				case "2":
 					//Vuole aggiungere un prodotto da mettere all'asta
 					
+					//Prodotto p = new Prodotto();
+					//resources.addProdotto(p);
 					break;
 				default:
 					System.out.println("Termine programma.");
+					reader.close();
+					writer.close();
+					socket.close();
 					break;
 				}
-			}while(scelta != "3");
+			}while(!sceltaMenu.equals("3"));
 				
 			
 			
@@ -71,4 +86,5 @@ public class ServerTCPThread extends Thread{
     		}
     	} 	
     }
+    
 }

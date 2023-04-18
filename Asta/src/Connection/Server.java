@@ -10,7 +10,7 @@ import gambit.Resources;
 
 public class Server {
 
-	private static Resources resources = null;
+	static Resources resources = null;
 	static GestisciAste gestioneAste = null;
 	private static ServerSocket serverSocket = null;
 
@@ -32,7 +32,7 @@ public class Server {
 		gestioneAste.run();
 		
 		/*Rimani mi serve per verificare che dopo aver instaurato la connessione TCP Client-Server 
-		 * si venga reindirizzati a GestisciAste (almeno finché non viene fixato l'errore)*/
+		 * si venga reindirizzati a GestisciAste (almeno finchÃ© non viene fixato l'errore)*/
 		try {
 			serverSocket = new ServerSocket(5000);
 			while (true) {

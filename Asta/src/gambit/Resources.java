@@ -74,10 +74,36 @@ public class Resources {
 		return user;
 	}
 	
-	private String transformDate(Date date) {
+	/**
+	 * metodo per avere una query custom al database
+	 * <strong>non so se va perchè ho fatto na roba molto ambigua</strong>
+	 * @param query Query da efettuare
+	 * @return ResultSet restituito
+	 */
+	public ResultSet customQuery(String query) {
+		Statement sta = null;
+		try {
+			sta = con.createStatement();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		synchronized (lockAste) {
+			synchronized (lockClienti) {
+				synchronized (lockOfferte) {
+					synchronized (lockProdotti) {
+						try {
+							return sta.executeQuery(query);
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}
 		return null;
 	}
-
 
 	//INDIRIZZI MULTICAST
 	/**
@@ -107,6 +133,33 @@ public class Resources {
 		return categorie;
 	}
 	
+	/**
+	 * Recupera l'id di una categoria
+	 * @param categoria Categoria di cui prendere l'id, il metodo non è case-sensitive
+	 * @return id della categoria, altrimenti -1
+	 */
+	public int getIdCategoria(String categoria) {
+		
+		String[] categorie = getCategorie();
+		String query = "SELECT id_categoria FROM Categorie WHERE categoria=";
+		for (String string : categorie) {
+			if(string.equalsIgnoreCase(categoria)) {
+				query = query+string;
+			}
+		}
+		
+		try {
+			Statement sta = con.createStatement();
+			ResultSet rs = sta.executeQuery(query);
+			rs.next();
+			return rs.getInt(1);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return -1;
+	}
+	
 	//GESTIONE DELLE ASTE
 	private Object lockAste = new Object();
 	
@@ -128,8 +181,67 @@ public class Resources {
 		return aste.add(asta);
 	}
 	
+	/**
+	 * rimuove un'asta attiva
+	 * @param asta Asta da rimuovere dall lista
+	 * @return Asta rimossa
+	 */
 	public Asta removeActiveAsta(Asta asta) {
 		return aste.remove(getIdUltimaAsta());
+	}
+	
+	/**
+	 * prende una singola asta
+	 * @param id_asta Id dell asta da prendere
+	 * @return la rappresentazone dell'asta
+	 */
+	public Asta getAsta(int id_asta) {
+		LinkedList<Prodotto> prodotti = getProdotti();
+		LinkedList<Cliente> vincitori = getClienti();
+		
+		Statement sta = null;
+		try {
+			sta = con.createStatement();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		synchronized (lockAste) {	
+			Prodotto prodotto = null;
+			Cliente vincitore = null;
+			try {
+				ResultSet rs = sta.executeQuery("SELECT * FROM Aste WHERE id_asta="+id_asta);
+				rs.next();
+				for (Cliente cliente : vincitori) {
+					if(cliente.getUSERNAME().equals(rs.getString("vincitore"))) {
+						vincitore = cliente;
+						vincitori.remove(cliente); //rimozione del cliente dalla lista per velocizzare le preossime ricerche
+						break;
+					}
+				}
+				for (Prodotto prod : prodotti) {
+					if(prod.getID_PRODOTTO() == rs.getInt("id_prodotto")) {
+						prodotto = prod;
+						prodotti.remove(prodotto);
+						break;
+					}
+				}
+				return new Asta(
+						rs.getInt("id_asta"),
+						rs.getTimestamp("dataOra_inzio"),
+						rs.getTimestamp("dataOra_fine"),
+						rs.getString("indirizzo_ip"),
+						vincitore,
+						prodotto);
+					
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+		
 	}
 	
 	/**
@@ -290,9 +402,7 @@ public class Resources {
 		 }
 		 return idUltimaAsta;
 	 }
-	 
-	 
-	
+	 	
 	//GESTIONE DEI CLIENTI
 	//lock per il synchronized
 	private Object lockClienti = new Object();
@@ -371,6 +481,41 @@ public class Resources {
 				e.printStackTrace();
 			}
 			return venditori;
+		}
+	}
+	
+	/**
+	 * recupera un cliente dal database
+	 * @param UserName UserName del cliente
+	 * @return l'ogggetto rappresentate il cliente
+	 */
+	public Cliente getCliente(String UserName) {
+		Statement sta = null;
+		try {
+			sta = con.createStatement();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		synchronized (lockClienti) {
+			try {
+				ResultSet rs = sta.executeQuery("SELECT * FROM Clienti WHERE userName="+UserName);
+				rs.next();
+				return new Cliente(
+							rs.getString("UserName"),
+							rs.getString("nome"),
+							rs.getString("cognome"),
+							rs.getDate("data_nascita"),
+							rs.getString("residenza"),
+							rs.getString("password"),
+							rs.getString("email"));
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
 		}
 	}
 	
@@ -510,6 +655,51 @@ public class Resources {
 		}
 	}
 	
+	public Prodotto getProdotto(int id_prodotto) {
+		LinkedList<Cliente> venditori = getVenditori();
+		String query = "SELECT * "
+				+ "FROM Prodotti,Categorie "
+				+ "WHERE Prodotti.id_categoria = Categorie.id_categoria "
+				+ "WHERE id_prodotto="+id_prodotto;
+		
+		Statement sta = null;
+		try {
+			sta = con.createStatement();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		synchronized (lockProdotti) {
+			try {
+				ResultSet rs = sta.executeQuery(query);		
+				Cliente venditore = null;
+				rs.next();
+				for (Cliente cliente : venditori) {
+					if(cliente.getUSERNAME().equals(rs.getString("venditore"))) {
+						venditore = cliente;
+						break;
+					}
+				}
+				return new Prodotto(
+						rs.getInt("id_prodotto"), 
+						rs.getString("nome"), 
+						rs.getString("descrizione"), 
+						rs.getFloat("prezzoDiBase"), 
+						rs.getBoolean("venduto"), 
+						venditore,
+						rs.getTimestamp("dataOra_aggiunta"),
+						rs.getString("categoria"));	
+			
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			return null;	
+		}
+	}
+	
 	/**
 	 * Aggiunge un prodotto all'interno del database, questo è un methodo thrad-safe.
 	 * E' synchrinizzato con il metodo {@link getProdotti}.
@@ -603,8 +793,6 @@ public class Resources {
 			return null;
 		}
 	}
-	
-	
 	
 	
 	//GESTIONE DELLE OFFERTE
@@ -705,6 +893,59 @@ public class Resources {
 				e.printStackTrace();
 			}
 			return offerte;
+		}
+	 }
+	 
+	 /**
+	  * recupera un offerta dal database
+	  * @param id_offerta Id dell'offerta
+	  * @return L'oggetto rappresentante l'asta
+	  */
+	 public Offerta getOfferta(int id_offerta) {
+		 LinkedList<Cliente> offerenti = getClienti();
+		 LinkedList<Asta> aste = getAllGambitsToNow();
+		 String query = "SELECT * FROM Offerte WHERE id_offerta="+id_offerta;
+		 
+		 Statement sta = null;
+		try {
+			sta = con.createStatement();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		 
+		 synchronized (lockOfferte) {
+			 try {
+				ResultSet rs = sta.executeQuery(query);
+				Cliente offerente = null;
+				Asta asta = null;
+				rs.next();
+				for (Cliente cliente : offerenti) {
+					if(cliente.getUSERNAME().equals(rs.getString("userName"))) {
+						offerente = cliente;
+						offerenti.remove(cliente); //rimozione del cliente dalla lista per velocizzare le preossime ricerche
+						break;
+					}
+				}
+				for (Asta a : aste) {
+					if(a.getId_asta() == rs.getInt("id_asta")) {
+						asta = a;
+						aste.remove(a); //rimozione del cliente dalla lista per velocizzare le preossime ricerche
+						break;
+					}
+				}
+				
+				return new Offerta(
+						rs.getInt("id_offerta"),
+						rs.getTimestamp("DataOra_offerta"),
+						rs.getFloat("offerta"),
+						offerente,
+						asta);		
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
 		}
 	 }
 	 
@@ -835,9 +1076,5 @@ public class Resources {
 			}
 			return null;
 		}
-	 }
-	 
-	 
-    
-  
+	 }	 
 }

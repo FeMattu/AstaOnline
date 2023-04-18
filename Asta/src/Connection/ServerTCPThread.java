@@ -62,7 +62,9 @@ public class ServerTCPThread extends Thread{
 					List<Asta> aste = resources.getCurrentGambits();
 					for(int i=0;i<aste.size();i++) {
 						if(Client.ricevuto) {
-							writer.writeBytes("ID: "+aste.get(i).getId_asta()+"\tProdotto: "+aste.get(i).getProdotto()+"\n");
+							writer.writeBytes(aste.get(i).getId_asta()+":"
+									+aste.get(i).getProdotto()+":"
+									+aste.get(i).getPrezzoCorrente()+"\n");
 							inviato = true;
 						}
 						inviato = false;

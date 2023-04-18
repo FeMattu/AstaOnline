@@ -13,7 +13,6 @@ import Connection.ThreadAsta;
 public class GestisciAste extends Thread{
 	
     private Resources resources;
-    private static int idAsta = 0;
     
     /**
      * Crea un thread che decide il prodotto e lo mette all'asta.
@@ -29,11 +28,11 @@ public class GestisciAste extends Thread{
     	LinkedList<Prodotto> prodotti = resources.getProdotti();
     	
     	while(resources.getIndirizziMulticast().size() > 0) {
-    		Asta asta = new Asta(idAsta, prodotti.get(idAsta), resources.getIndirizziMulticast().remove(0) );
+    		int id = resources.getIdUltimaAsta()+1;
+    		Asta asta = new Asta(id, prodotti.get(id), resources.getIndirizziMulticast().remove(0));
     		ThreadAsta threadAsta = new ThreadAsta(asta, resources);
     		threadAsta.run();
     		resources.addActiveAsta(asta);
-    		idAsta++;
     	}
     	
     }

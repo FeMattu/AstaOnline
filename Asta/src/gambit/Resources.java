@@ -122,6 +122,10 @@ public class Resources {
 		return aste.add(asta);
 	}
 	
+	public Asta removeActiveAsta(Asta asta) {
+		return aste.remove(getIdUltimaAsta());
+	}
+	
 	/**
 	 * restituisce tutte le aste che ci sono all'interno del database, 
 	 * quindi tutte le aste che ci sono state e che sono concluse
@@ -185,9 +189,9 @@ public class Resources {
 	public boolean addAstaIntoDB(Asta asta) {
 		String query = "INSERT INTO Aste VALUES ('"
 				+ asta.getId_asta() +"','"
-				+ asta.getDataOra_inizio() +"','"
-				+ asta.getDataOra_fine() +"','"
-				+ asta.getVincitore() +"','"
+				+ asta.getDataOra_inizio().toString() +"','"
+				+ asta.getDataOra_fine().toString() +"','"
+				+ asta.getVincitore().getUSERNAME() +"','"
 				+ asta.getProdotto().getID_PRODOTTO() +"','"
 				+ asta.getIp() + "')";
 		
@@ -475,7 +479,8 @@ public class Resources {
 		int numeroProdottiAggiunti = 0;
 		String query = "SELECT * "
 				+ "FROM Prodotti,Categorie "
-				+ "WHERE Prodotti.id_categoria = Categorie.id_categoria";
+				+ "WHERE Prodotti.id_categoria = Categorie.id_categoria "
+				+ "ORDER BY Prodotti.id_prodotto;";
 		
 		Statement sta = null;
 		try {
@@ -506,7 +511,7 @@ public class Resources {
 							rs.getBoolean("venduto"), 
 							venditore,
 							rs.getDate("dataOra_aggiunta"),
-							rs.getString("categoria")));		
+							rs.getString("categoria")));	
 				}
 				if(numeroProdottiAggiunti > 0)
 					System.out.println("Numero prodotti aggiunti = " + numeroProdottiAggiunti);

@@ -1,5 +1,8 @@
 package Connection;
 
+import java.sql.Date;
+import java.time.LocalDate;
+
 import gambit.Asta;
 import gambit.GestisciAste;
 import gambit.Resources;
@@ -22,7 +25,7 @@ public class ThreadAsta extends Thread{
     //private String porta;
     //private MulticastSocket socket;
     //private Prodotto prodotto;
-    private Resources r;
+    private Resources resources;
     private Asta asta;
     
     /**
@@ -30,9 +33,9 @@ public class ThreadAsta extends Thread{
      * @param asta -> asta istance
      * @param r -> resources istance
      */
-    public ThreadAsta(Asta asta, Resources r){
+    public ThreadAsta(Asta asta, Resources resources){
         this.asta = asta;
-        this.r = r;
+        this.resources = resources;
     }
 
     /**
@@ -40,13 +43,23 @@ public class ThreadAsta extends Thread{
      */
     public void run(){
         super.run();
-        //prodotto.toString();
-        //System.out.println(prodotto);
+        //settaggio data e ora inizio asta
+        asta.setDataOra_inizio(Date.valueOf(LocalDate.now()));
         
         
-        // Tutte le volte che un'asta termina, il contatore delle aste runtime viene aggiornato. Il valore false dice che devo diminuire il numero delle aste runti
-        GestisciAste.aggiornaAsteInCorso(false);
-        r.addAstaIntoDB(asta);
+        
+        //run .....
+        System.out.println(asta);
+        System.out.println(asta.getProdotto());
+        asta.setVincitore(resources.getClienti().get(asta.getId_asta()));        
+        
+        
+        
+        //fine asta
+        //aggiunta data e ora finea asta
+        asta.setDataOra_fine(Date.valueOf(LocalDate.now()));
+        resources.getCurrentGambits().remove(asta);
+        resources.addAstaIntoDB(asta);
     }
     
 }

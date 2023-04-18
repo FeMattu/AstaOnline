@@ -13,10 +13,9 @@ public class Asta {
 	
 	private float prezzoCorrente;
 	
-	public Asta(int id_asta, Date dataOra_inizio, Prodotto prodotto, String ip) {
+	public Asta(int id_asta, Prodotto prodotto, String ip) {
 		super();
 		this.id_asta = id_asta;
-		this.dataOra_inizio = dataOra_inizio;
 		this.prodotto = prodotto;
 		this.prezzoCorrente=prodotto.getPrezzoDiBase();
 		this.ip = ip;
@@ -45,11 +44,23 @@ public class Asta {
 	public Date getDataOra_fine() {
 		return dataOra_fine;
 	}
+	
+	public void setDataOra_inizio(Date dataOra_inizio) {
+		this.dataOra_inizio = dataOra_inizio;
+	}
+
+	public void setDataOra_fine(Date dataOra_fine) {
+		this.dataOra_fine = dataOra_fine;
+	}
 
 	public Cliente getVincitore() {
 		return vincitore;
 	}
 	
+	public void setVincitore(Cliente vincitore) {
+		this.vincitore = vincitore;
+	}
+
 	public Prodotto getProdotto() {
 		return prodotto;
 	}
@@ -67,6 +78,12 @@ public class Asta {
 		if(prezzo > prezzoCorrente) {
 			prezzoCorrente = prezzo;
 		}
+	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "Id_asta: "+id_asta+"\tIp: "+ip;
 	}
 
 }

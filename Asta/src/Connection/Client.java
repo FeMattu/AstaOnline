@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -25,35 +26,115 @@ public class Client {
 	private static BufferedReader reader;
 	private static DataOutputStream writer;
 	private static Scanner scanner = new Scanner(System.in);
-	static int scelta = 0;
-	static boolean ricevuto,verificato=false;
-	static String username;
-	static String password;
+	private static int scelta = 0;
+	private static String username;
+	private static String password;
 
 	public static void main(String[] args) {
+		try {
+			socket = new Socket("localhost", 5000);
+			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			writer = new DataOutputStream(socket.getOutputStream());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
 		
-		LinkedList<Cliente> clienti = Server.resources.getClienti();
-		for(int i=0;i<clienti.size();i++) {
-			System.out.println(clienti.get(i).toString());
-		}
-		
-		while(!verificato) {
-			System.out.println("---\nLOGIN FORM:");
-			System.out.print("Username: ");
-			username = scanner.next();
-			System.out.print("Password: ");
-			password = scanner.next();
-			
-			for(int i=0;i<clienti.size();i++) {
-				if(clienti.get(i).getUSERNAME().equals(username) && clienti.get(i).getPassword().equals(password)) {
-					verificato = true;
-					break;
-				}
+		System.out.println("Connessione al server...");
+		//Se non viene effettuato l'accesso al server il programma termina
+		if(!accessoServer()){
+			try {
+				System.out.println("Connessione al server non effettuata");
+				reader.close();
+				writer.close();
+				socket.close();
+				scanner.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+			return; 
 		}
 		
-		serverConnection();
+		System.out.println("Accesso effettuato");
 
+		scanner.close();
+	}
+	
+	/**
+	 * permette al client di accedere o registrarsi alla "piattaforma"
+	 * @return <strong>true</strong> se l'accesso è stato effettuato, <strong>false</strong> altrimenti
+	 */
+	private static boolean accessoServer() {
+		int scelta = -1;
+		while(true) {
+			System.out.println("1 -> Accedi");
+			System.out.println("2 -> registrati");
+			System.out.println("0 -> exit");
+			System.out.println("Scelta: ");
+			scelta = scanner.nextInt();
+			switch (scelta) {
+			case 1: {
+				String username = null;
+				String psw = null;
+				System.out.println("Username: ");
+				username = scanner.next();
+				System.out.println("Password: ");
+				psw = scanner.next();
+				
+				try {
+					writer.writeBytes(username+":"+psw+"\n");
+					if(reader.readLine().equals("OK")) {
+						return true;
+					}else {
+						System.out.println("Username o psw non corretti, riprovare");
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}	
+				break;
+			}
+			case 2: {
+				String username, nome, cognome, residenza, psw, email = null;
+				System.out.println("Username: ");
+				username = scanner.next();
+				
+				System.out.println("Nome: ");
+				nome = scanner.next();
+				
+				System.out.println("Cognome: ");
+				cognome = scanner.next();
+				
+				System.out.println("E-mail: ");
+				email = scanner.next();
+				
+				System.out.println("Residenza: ");
+				residenza = scanner.next();
+				
+				System.out.println("Password:");
+				psw = scanner.next();
+				
+				try {
+					writer.writeBytes(username+":"+psw+":"+nome+":"+cognome+":"+email+":"+residenza);
+					if(reader.readLine().equals("OK")) {
+						return true;
+					}else {
+						System.out.println("Registrazione fallita, riprovare");
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}				
+				break;
+			}
+			case 0: {
+				return false;
+			}
+			default:
+				System.out.println("Scelta immessa non valida, reinserire");
+			}
+		}	
 	}
 	
 	/**
@@ -61,16 +142,10 @@ public class Client {
 	 */
 	private static void serverConnection() {
 		try {
-			socket = new Socket("localhost", 5000);
-			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			writer = new DataOutputStream(socket.getOutputStream());
-			
-			
 			System.out.println(reader.readLine()+"\n---");
 			
 			//Menu per scelta su cosa fare
 			while(scelta != 3) {
-				System.out.println("\nCosa vuoi fare?\n");
 				System.out.println("1. Partecipare ad un'asta");
 				System.out.println("2. Aggiungere un prodotto");
 				System.out.println("3. Niente\n");
@@ -80,17 +155,6 @@ public class Client {
 				
 				switch(scelta) {
 				case 1:
-					String infoAsta="";
-					//while(!infoAsta.equals(null)) {
-					//	if(ServerTCPThread.inviato) {
-					//		infoAsta = reader.readLine();
-					//		ricevuto = true;
-					//	}
-					//	ricevuto = false;
-					//}
-					System.out.println("\nQuale asta scegli? [ID]: ");
-					int sceltaAsta = scanner.nextInt();
-					writer.writeBytes(sceltaAsta+"\n");
 					break;
 				case 2:
 					System.out.println();

@@ -18,13 +18,11 @@ import gambit.Resources;
  *
  */
 public class Server {
-
-	static Resources resources = null;
-	static GestisciAste gestioneAste = null;
-	private static ServerSocket serverSocket = null;
-
 	public static void main(String[] args) {
-
+		Resources resources = null;
+		GestisciAste gestioneAste = null;
+		ServerSocket serverSocket = null;
+		
 		String ip = null;
 		try {
 			ip = InetAddress.getByName("astadb.ddns.net").getHostAddress();

@@ -25,6 +25,8 @@ public class GestisciAste extends Thread{
     @Override
     public void run() {
     	super.run();
+    	System.out.println("Creazione aste...");
+    	
     	LinkedList<Prodotto> prodotti = resources.getProdotti();
     	
     	while(resources.getIndirizziMulticast().size() > 0) {
@@ -35,6 +37,9 @@ public class GestisciAste extends Thread{
     		threadAsta.run();
     		resources.addActiveAsta(asta);
     	}
+    	
+    	if(resources.getCurrentGambits().size() == 30)
+    		System.out.println("Creazione aste avventua con successo");
     	
     }
     

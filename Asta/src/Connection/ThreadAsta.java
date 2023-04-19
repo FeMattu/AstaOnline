@@ -54,9 +54,9 @@ public class ThreadAsta extends Thread{
         
         //run .....
         //per il test predno un client a caso
-        int i = (int) Math.random() * 100;
-        System.out.println(asta);
-        System.out.println(asta.getProdotto());
+        int i = (int) (Math.random() * 100);
+        //System.out.println(asta);
+        //System.out.println(asta.getProdotto());
         asta.setVincitore(resources.getClienti().get(i));
         
         

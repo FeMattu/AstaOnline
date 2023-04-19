@@ -5,9 +5,16 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.sql.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import gambit.Asta;
+import gambit.Cliente;
+import gambit.Prodotto;
 import gambit.Resources;
 
 /**
@@ -50,58 +57,68 @@ public class ServerTCPThread extends Thread{
     @Override
     public void run() {
     	// TODO Auto-generated method stub
-    	super.run();
+    	super.run();  
+    	String access;
+		try {
+			access = reader.readLine();
+			if(validazioneAccesso(access)) {
+				writer.writeBytes("OK\n");
+			}else {
+				writer.writeBytes("Nan\n");
+				reader.close();
+				writer.close();
+				socket.close();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+    }
+    
+    private boolean validazioneAccesso(String access) {
+    	String[] parametri = access.split(":");
+    	if(parametri.length == 2) {
+    		if(resources.getCliente(parametri[0]).getPassword().equals(parametri[1])) {
+    			return true;
+    		}
+    	}else if(parametri.length > 2){
+    		return  resources.addCliente(new Cliente(
+	    				parametri[0], 
+	    				parametri[2], 
+	    				parametri[3], 
+	    				Date.valueOf(LocalDate.now()), 
+	    				parametri[4], 
+	    				parametri[1], 
+	    				parametri[3]));
+    	}
+    	
+    	return false;
+    }
+    
+    /**
+     * invia le informazioni sulle aste attive al client con il seguente formato:
+     * id_asta:nomeProdotto:categoria:prezzoCorrente;
+     * @return
+     */
+    private boolean sendAste() {
+    	List<Asta> currentGambits = resources.getCurrentGambits();
+    	
     	try {
-			writer.writeBytes("Connessione effettuata con successo\n");
-			String sceltaMenu;
-			do {
-				sceltaMenu = reader.readLine();
-				switch(sceltaMenu) {
-				case "1":
-					//Vuole partecipare ad un asta, vengono mostrate quelle disponibili
-					List<Asta> aste = resources.getCurrentGambits();
-					for(int i=0;i<aste.size();i++) {
-						if(Client.ricevuto) {
-							writer.writeBytes(aste.get(i).getId_asta()+":"
-									+aste.get(i).getProdotto()+":"
-									+aste.get(i).getPrezzoCorrente()+"\n");
-							inviato = true;
-						}
-						inviato = false;
-					}
-					String sceltaAsta = reader.readLine();
-					System.out.println(sceltaAsta);
-					break;
-				case "2":
-					//Vuole aggiungere un prodotto da mettere all'asta
-					
-					//Prodotto p = new Prodotto();
-					//resources.addProdotto(p);
-					break;
-				default:
-					System.out.println("Termine programma.");
-					reader.close();
-					writer.close();
-					socket.close();
-					break;
-				}
-			}while(!sceltaMenu.equals("3"));
-				
-			
-			
+    		for (Asta asta : currentGambits) {
+    			Prodotto p = asta.getProdotto();
+				writer.writeBytes(asta.getId_asta()+":"
+						+ p.getNome()+":"
+						+ p.getCategoria()+":"
+						+ asta.getPrezzoCorrente());
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     	
-    	if(socket != null) {
-    		try {
-    			socket.close();
-    		} catch (IOException e) {
-    			// TODO Auto-generated catch block
-    			e.printStackTrace();
-    		}
-    	} 	
+    	
+    	return false;
     }
     
 }

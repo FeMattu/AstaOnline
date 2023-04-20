@@ -141,7 +141,7 @@ public class Resources {
 	public int getIdCategoria(String categoria) {
 		
 		String[] categorie = getCategorie();
-		String query = "SELECT id_categoria FROM Categorie WHERE categoria=";
+		String query = "SELECT id_categoria FROM Categorie WHERE categoria='"+categoria+"';";
 		for (String string : categorie) {
 			if(string.equalsIgnoreCase(categoria)) {
 				query = query+string;
@@ -211,7 +211,7 @@ public class Resources {
 			Prodotto prodotto = null;
 			Cliente vincitore = null;
 			try {
-				ResultSet rs = sta.executeQuery("SELECT * FROM Aste WHERE id_asta="+id_asta);
+				ResultSet rs = sta.executeQuery("SELECT * FROM Aste WHERE id_asta='"+id_asta+"';");
 				rs.next();
 				for (Cliente cliente : vincitori) {
 					if(cliente.getUSERNAME().equals(rs.getString("vincitore"))) {
@@ -332,8 +332,8 @@ public class Resources {
 	 * @return <strong>true</strong> se l'asta è stata rimossa <strong>false</strong> altrimenti
 	 */
 	public Asta removeAstaFromDB(int id_asta) {
-		String queryDati = "SELECT * FROM Aste WHERE id_asta="+id_asta;
-		String queryRimozione = "DELETE FROM Aste WHERE id_asta="+id_asta;
+		String queryDati = "SELECT * FROM Aste WHERE id_asta='"+id_asta+"';";
+		String queryRimozione = "DELETE FROM Aste WHERE id_asta="+id_asta+"';";
 		Asta asta = null;
 		
 		LinkedList<Prodotto> prodotti = getProdotti();
@@ -500,7 +500,7 @@ public class Resources {
 		
 		synchronized (lockClienti) {
 			try {
-				ResultSet rs = sta.executeQuery("SELECT * FROM Clienti WHERE UserName='"+UserName+"';");
+				ResultSet rs = sta.executeQuery("SELECT * FROM Clienti WHERE Clienti.UserName='"+UserName+"';");
 				rs.next();
 				return new Cliente(
 							rs.getString("UserName"),
@@ -561,8 +561,8 @@ public class Resources {
 	 */
 	public Cliente removeCliente(String userName) {
 		Cliente cliente = null;
-		String queryDati = "SELECT * FROM Clienti WHERE userName="+userName;
-		String queryRimozione = "DELETE FROM Clienti WHERE userName="+userName;
+		String queryDati = "SELECT * FROM Clienti WHERE userName='"+userName+"';";
+		String queryRimozione = "DELETE FROM Clienti WHERE userName="+userName+"';";
 		Statement sta = null;
 		try {
 			sta = con.createStatement();
@@ -660,7 +660,7 @@ public class Resources {
 		String query = "SELECT * "
 				+ "FROM Prodotti,Categorie "
 				+ "WHERE Prodotti.id_categoria = Categorie.id_categoria "
-				+ "WHERE id_prodotto="+id_prodotto;
+				+ "WHERE id_prodotto='"+id_prodotto+"';";
 		
 		Statement sta = null;
 		try {
@@ -746,8 +746,8 @@ public class Resources {
 	 */
 	public Prodotto removeProdotto(int id_prodotto) {
 		Prodotto prodotto = null;
-		String queryDati = "SELECT * FROM Prodotti WHERE id_prodotto="+id_prodotto;
-		String queryRimozione = "DELETE FROM Prodotti WHERE id_prodotto="+id_prodotto;
+		String queryDati = "SELECT * FROM Prodotti WHERE id_prodotto='"+id_prodotto+"';";
+		String queryRimozione = "DELETE FROM Prodotti WHERE id_prodotto='"+id_prodotto+"';";
 		LinkedList<Cliente> venditori = getVenditori();
 		
 		Statement sta = null;
@@ -859,7 +859,7 @@ public class Resources {
 	 public LinkedList<Offerta> getOfferteByCliente(Cliente cliente){
 		LinkedList<Offerta> offerte = new LinkedList<Offerta>();
 		LinkedList<Asta> aste = getAllGambitsToNow();
-		String query = "SELECT * FROM Offerte WHERE UserName="+cliente.getUSERNAME();	
+		String query = "SELECT * FROM Offerte WHERE UserName='"+cliente.getUSERNAME()+"';";	
 		 
 		Statement sta = null;
 		try {
@@ -904,7 +904,7 @@ public class Resources {
 	 public Offerta getOfferta(int id_offerta) {
 		 LinkedList<Cliente> offerenti = getClienti();
 		 LinkedList<Asta> aste = getAllGambitsToNow();
-		 String query = "SELECT * FROM Offerte WHERE id_offerta="+id_offerta;
+		 String query = "SELECT * FROM Offerte WHERE id_offerta='"+id_offerta+"';";
 		 
 		 Statement sta = null;
 		try {
@@ -957,7 +957,7 @@ public class Resources {
 	 public LinkedList<Offerta> getOfferteByAsta (Asta asta){
 		LinkedList<Offerta> offerte = new LinkedList<Offerta>();
 		LinkedList<Cliente> offerenti = getClienti();
-		String query = "SELECT * FROM Offerte WHERE ID_Asta="+asta.getId_asta();
+		String query = "SELECT * FROM Offerte WHERE ID_Asta='"+asta.getId_asta()+"';";
 		Statement sta = null;
 		try {
 			sta = con.createStatement();
@@ -1025,8 +1025,8 @@ public class Resources {
 	 }
 	 
 	 public Offerta removeOfferta(int id_offerta) {
-		String queryDati = "SELECT * FROM Offerta WHERE id_offerta="+id_offerta;
-		String queryRimozione = "DELETE FROM Offerte WHERE id_offerta="+id_offerta;
+		String queryDati = "SELECT * FROM Offerta WHERE id_offerta='"+id_offerta+"';";
+		String queryRimozione = "DELETE FROM Offerte WHERE id_offerta='"+id_offerta+"';";
 		LinkedList<Cliente> offerenti = getClienti();
 		LinkedList<Asta> aste = getAllGambitsToNow();
 		Offerta offerta = null;

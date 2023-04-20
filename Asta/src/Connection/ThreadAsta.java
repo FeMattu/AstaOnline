@@ -1,5 +1,11 @@
 package Connection;
 
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -51,12 +57,30 @@ public class ThreadAsta extends Thread{
         super.run();
         //settaggio data e ora inizio asta       
         asta.setDataOra_inizio(Timestamp.valueOf(LocalDateTime.now()));
+        System.out.println(asta);
         
-        //run .....
+		try {
+			byte[] buf = new byte[256];
+			DatagramSocket socket = new DatagramSocket();
+			InetAddress address = InetAddress.getByName(asta.getIp());
+			DatagramPacket packet = new DatagramPacket(buf, buf.length, address, 5550);
+			socket.send(packet);
+			
+			
+			
+			
+			
+			
+			
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+             
+        
         //per il test predno un client a caso
-        int i = (int) (Math.random() * 100);
-        //System.out.println(asta);
-        //System.out.println(asta.getProdotto());
+        int i = (int) (Math.random() * 100);     
         asta.setVincitore(resources.getClienti().get(i));
         
         

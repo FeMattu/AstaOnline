@@ -500,7 +500,7 @@ public class Resources {
 		
 		synchronized (lockClienti) {
 			try {
-				ResultSet rs = sta.executeQuery("SELECT * FROM Clienti WHERE userName="+UserName);
+				ResultSet rs = sta.executeQuery("SELECT * FROM Clienti WHERE UserName='"+UserName+"';");
 				rs.next();
 				return new Cliente(
 							rs.getString("UserName"),

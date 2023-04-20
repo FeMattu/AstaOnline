@@ -83,14 +83,14 @@ public class ServerTCPThread extends Thread{
     			return true;
     		}
     	}else if(parametri.length > 2){
-    		return  resources.addCliente(new Cliente(
+    		return resources.addCliente(new Cliente(
 	    				parametri[0], 
 	    				parametri[2], 
-	    				parametri[3], 
-	    				Date.valueOf(LocalDate.now()), 
-	    				parametri[4], 
+	    				parametri[3],
+	    				Date.valueOf(LocalDate.now()),
+	    				parametri[5],
 	    				parametri[1], 
-	    				parametri[3]));
+	    				parametri[4]));
     	}
     	
     	return false;

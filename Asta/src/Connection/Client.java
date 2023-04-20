@@ -71,15 +71,15 @@ public class Client {
 			System.out.println("1 -> Accedi");
 			System.out.println("2 -> registrati");
 			System.out.println("0 -> exit");
-			System.out.println("Scelta: ");
+			System.out.print("Scelta: ");
 			scelta = scanner.nextInt();
 			switch (scelta) {
 			case 1: {
 				String username = null;
 				String psw = null;
-				System.out.println("Username: ");
+				System.out.print("Username: ");
 				username = scanner.next();
-				System.out.println("Password: ");
+				System.out.print("Password: ");
 				psw = scanner.next();
 				
 				try {
@@ -97,26 +97,26 @@ public class Client {
 			}
 			case 2: {
 				String username, nome, cognome, residenza, psw, email = null;
-				System.out.println("Username: ");
+				System.out.print("Username: ");
 				username = scanner.next();
 				
-				System.out.println("Nome: ");
+				System.out.print("Nome: ");
 				nome = scanner.next();
 				
-				System.out.println("Cognome: ");
+				System.out.print("Cognome: ");
 				cognome = scanner.next();
 				
-				System.out.println("E-mail: ");
+				System.out.print("E-mail: ");
 				email = scanner.next();
+				scanner.nextLine();
+				System.out.print("Residenza: ");
+				residenza = scanner.nextLine();
 				
-				System.out.println("Residenza: ");
-				residenza = scanner.next();
-				
-				System.out.println("Password:");
+				System.out.print("Password (senza spazi): ");
 				psw = scanner.next();
 				
 				try {
-					writer.writeBytes(username+":"+psw+":"+nome+":"+cognome+":"+email+":"+residenza);
+					writer.writeBytes(username+":"+psw+":"+nome+":"+cognome+":"+email+":"+residenza+"\n");
 					if(reader.readLine().equals("OK")) {
 						return true;
 					}else {

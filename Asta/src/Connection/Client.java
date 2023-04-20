@@ -26,11 +26,10 @@ public class Client {
 	private static BufferedReader reader;
 	private static DataOutputStream writer;
 	private static Scanner scanner = new Scanner(System.in);
-	private static int scelta = 0;
 	private static String username;
 	private static String password;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		try {
 			socket = new Socket("localhost", 5000);
 			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -57,7 +56,27 @@ public class Client {
 		}
 		
 		System.out.println("Accesso effettuato");
-
+		
+		System.out.println("---\n---\n---\n");
+		int scelta = sceltaMenu();
+		
+		switch (scelta) {
+		case 1:
+			
+			break;
+		case 2:
+			
+			break;
+		case 0:
+			break;
+		default:
+			System.out.println("Scelta non valida, reinserire.");
+			break;
+		}
+		
+		reader.close();
+		writer.close();
+		socket.close();
 		scanner.close();
 	}
 	
@@ -75,15 +94,13 @@ public class Client {
 			scelta = scanner.nextInt();
 			switch (scelta) {
 			case 1: {
-				String username = null;
-				String psw = null;
 				System.out.print("Username: ");
 				username = scanner.next();
 				System.out.print("Password: ");
-				psw = scanner.next();
+				password = scanner.next();
 				
 				try {
-					writer.writeBytes(username+":"+psw+"\n");
+					writer.writeBytes(username+":"+password+"\n");
 					if(reader.readLine().equals("OK")) {
 						return true;
 					}else {
@@ -96,7 +113,7 @@ public class Client {
 				break;
 			}
 			case 2: {
-				String username, nome, cognome, residenza, psw, email = null;
+				String nome, cognome, residenza, email = null;
 				System.out.print("Username: ");
 				username = scanner.next();
 				
@@ -113,10 +130,10 @@ public class Client {
 				residenza = scanner.nextLine();
 				
 				System.out.print("Password (senza spazi): ");
-				psw = scanner.next();
+				password = scanner.next();
 				
 				try {
-					writer.writeBytes(username+":"+psw+":"+nome+":"+cognome+":"+email+":"+residenza+"\n");
+					writer.writeBytes(username+":"+password+":"+nome+":"+cognome+":"+email+":"+residenza+"\n");
 					if(reader.readLine().equals("OK")) {
 						return true;
 					}else {
@@ -137,51 +154,19 @@ public class Client {
 		}	
 	}
 	
-	/**
-	 * <b>Start of the connection</b> -> defined <i>socket, reader, writer</i> istances
-	 */
-	private static void serverConnection() {
-		try {
-			System.out.println(reader.readLine()+"\n---");
-			
-			//Menu per scelta su cosa fare
-			while(scelta != 3) {
-				System.out.println("1. Partecipare ad un'asta");
-				System.out.println("2. Aggiungere un prodotto");
-				System.out.println("3. Niente\n");
-				System.out.print("Scelta: ");
-				scelta = scanner.nextInt();
-				writer.writeBytes(scelta+"\n");
-				
-				switch(scelta) {
-				case 1:
-					break;
-				case 2:
-					System.out.println();
-					break;
-				default:
-					System.out.println("Termine programma.");
-					reader.close();
-					writer.close();
-					socket.close();
-					break;
-				}
-				
-			}
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		if(socket != null) {
-    		try {
-    			socket.close();
-    		} catch (IOException e) {
-    			// TODO Auto-generated catch block
-    			e.printStackTrace();
-    		}
-    	} 	
+	private static void menu(){
+		System.out.println("\nMenù:");
+		System.out.println("1 -> Partecipa ad un'asta");
+		System.out.println("2 -> Aggiungi un prodotto");
+		System.out.println("0 -> Esci");
+		System.out.print("Scelta: ");
 	}
+	
+	private static int sceltaMenu() {
+		menu();
+		int s = scanner.nextInt();
+		return s;
+	}
+	
 
 }

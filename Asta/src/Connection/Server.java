@@ -34,12 +34,14 @@ public class Server {
 
 		String databaseURL = "jdbc:mysql://" + ip + ":3306";
 
+		Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+		
 		resources = new Resources(databaseURL, "gambit", "test", "trK5iuHPLQNLDZ9J");
 		gestioneAste = new GestisciAste(resources);
 		gestioneAste.run();
 		
-		/*Rimani mi serve per verificare che dopo aver instaurato la connessione TCP Client-Server 
-		 * si venga reindirizzati a GestisciAste (almeno finchÃ© non viene fixato l'errore)*/
+		
+		
 		try {
 			serverSocket = new ServerSocket(5000);
 			while (true) {

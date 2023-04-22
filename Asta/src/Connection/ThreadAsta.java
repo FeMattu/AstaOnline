@@ -30,15 +30,10 @@ import gambit.Resources;
  */
 public class ThreadAsta extends Thread{
 
-    //private final int ID_ASTA;
-    //private Date DataOra_inizio;
-    //private Date DataOra_fine;
-    //private String multicastIP;
-    //private String porta;
-    //private MulticastSocket socket;
-    //private Prodotto prodotto;
     private Resources resources;
     private Asta asta;
+	private DatagramSocket socket;
+	private InetAddress group;
     
     /**
      * <b>ThreadAsta constructor</b>
@@ -48,6 +43,14 @@ public class ThreadAsta extends Thread{
     public ThreadAsta(Asta asta, Resources resources){
         this.asta = asta;
         this.resources = resources;
+		try {
+			socket = new DatagramSocket();
+			group = InetAddress.getByName(asta.getIp());
+		} catch (SocketException | UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
     }
 
     /**
@@ -57,23 +60,11 @@ public class ThreadAsta extends Thread{
         super.run();
         //settaggio data e ora inizio asta       
         asta.setDataOra_inizio(Timestamp.valueOf(LocalDateTime.now()));
-        System.out.println(asta);
+        //System.out.println(asta);
         
 		try {
-			byte[] buf = new byte[256];
-			DatagramSocket socket = new DatagramSocket();
-			InetAddress address = InetAddress.getByName(asta.getIp());
-			DatagramPacket packet = new DatagramPacket(buf, buf.length, address, 5550);
-			socket.send(packet);
-			
-			
-			
-			
-			
-			
-			
-			
-		} catch (Exception e) {
+			sendUDPMessage("Ciao ti sei connesso pezzo di merda");
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -91,5 +82,12 @@ public class ThreadAsta extends Thread{
         resources.getCurrentGambits().remove(asta);
         resources.addAstaIntoDB(asta);
     }
+    
+    public void sendUDPMessage(String message) throws IOException {
+		byte[] msg = message.getBytes();
+		DatagramPacket packet = new DatagramPacket(msg, msg.length, group, 5550);
+		socket.send(packet);
+		socket.close();
+	}
     
 }

@@ -145,6 +145,7 @@ public class Resources {
 		for (String string : categorie) {
 			if(string.equalsIgnoreCase(categoria)) {
 				query = query+string;
+				break;
 			}
 		}
 		
@@ -714,9 +715,9 @@ public class Resources {
 				+ prodotto.getNome()+"','"
 				+ prodotto.getDescrizione()+"','"
 				+ prodotto.getPrezzoDiBase()+"','"
-				+ prodotto.isVenduto()+"','"
+				+ (prodotto.isVenduto() ? 1 : 0)+"','"
 				+ prodotto.getVenditore().getUSERNAME()+"','"
-				+ prodotto.getCategoria()+"','"
+				+ getIdCategoria(prodotto.getCategoria())+"','"
 				+ prodotto.getDataOra_aggiunta()+"')";
 		
 		Statement sta = null;

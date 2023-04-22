@@ -69,6 +69,25 @@ public class ServerTCPThread extends Thread{
 				writer.close();
 				socket.close();
 			}
+			
+			String choice = reader.readLine();
+			switch(choice){
+			case "1":
+				List<Asta> aste = resources.getCurrentGambits();
+				for(int i=0;i<aste.size();i++) {
+					writer.writeBytes(aste.get(i).toString()+"\n");
+				}
+				writer.writeBytes("OK\n");
+				break;
+			case "2":
+				break;
+			case "0":
+				break;
+			default:
+				System.out.println("Scelta invalida, reinserisci.");
+				break;
+			}
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -116,9 +135,11 @@ public class ServerTCPThread extends Thread{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	
-    	
     	return false;
     }
+    
+    private static void stampaAsteDisponibili() {
+    	
+	}
     
 }

@@ -59,12 +59,20 @@ public class Client {
 		
 		System.out.println("---\n---\n---\n");
 		int scelta = sceltaMenu();
+		writer.writeBytes(scelta+"\n");
 		
 		switch (scelta) {
 		case 1:
-			
+			//Scegliendo questa, passiamo alla scelta dell'asta alla quale prendere parte
+			System.out.println("\n---\nElenco aste a cui puoi partecipare:");
+			String asta = reader.readLine();
+			while(!asta.equals("OK")) {
+				System.out.println(asta);
+				asta = reader.readLine();
+			}
 			break;
 		case 2:
+			//Scegliendo questa, inseriamo un prodotto che verrà messo all'asta
 			
 			break;
 		case 0:

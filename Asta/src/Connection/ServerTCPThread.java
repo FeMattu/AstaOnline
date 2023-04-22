@@ -80,6 +80,15 @@ public class ServerTCPThread extends Thread{
 				writer.writeBytes("OK\n");
 				break;
 			case "2":
+				String[] propProdotto = reader.readLine().split(":");
+				Prodotto p = new Prodotto(resources.getIdUltimoProdotto()+1,
+										  propProdotto[0],
+										  propProdotto[1],
+										  propProdotto[3],
+										  false,
+										  /*cliente non so cosa metterci*/null,
+										  Date.valueOf(LocalDate.now()),
+										  propProdotto[2]);
 				break;
 			case "0":
 				break;

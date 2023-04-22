@@ -86,7 +86,7 @@ public class Client {
 			categoria = scanner.nextLine();
 			System.out.print("Prezzo di Base: ");
 			prezDiBase = scanner.nextFloat();
-			
+			writer.writeBytes(nome+":"+desc+":"+categoria+":"+prezDiBase+"\n");
 			break;
 		case 0:
 			break;

@@ -57,14 +57,14 @@ public class Client {
 		
 		System.out.println("Accesso effettuato");
 		
-		System.out.println("---\n---\n---\n");
+		System.out.println("---\n---\n---");
 		int scelta = sceltaMenu();
 		writer.writeBytes(scelta+"\n");
 		
 		switch (scelta) {
 		case 1:
 			//Scegliendo questa, passiamo alla scelta dell'asta alla quale prendere parte
-			System.out.println("\n---\nElenco aste a cui puoi partecipare:");
+			System.out.println("---\nElenco aste a cui puoi partecipare:");
 			String asta = reader.readLine();
 			while(!asta.equals("OK")) {
 				System.out.println(asta);
@@ -73,6 +73,19 @@ public class Client {
 			break;
 		case 2:
 			//Scegliendo questa, inseriamo un prodotto che verrà messo all'asta
+			String nome,desc,categoria;
+			float prezDiBase;
+			System.out.println("---\nInserisci un prodotto:\n---");
+			System.out.print("Nome: ");
+			scanner.nextLine();
+			nome = scanner.nextLine();
+			System.out.print("Descrizione: ");
+			scanner.nextLine();
+			desc = scanner.nextLine();
+			System.out.print("Categoria: ");
+			categoria = scanner.nextLine();
+			System.out.print("Prezzo di Base: ");
+			prezDiBase = scanner.nextFloat();
 			
 			break;
 		case 0:

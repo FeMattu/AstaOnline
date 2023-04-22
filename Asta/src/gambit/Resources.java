@@ -1076,5 +1076,24 @@ public class Resources {
 			}
 			return null;
 		}
-	 }	 
+	 }
+	 
+	 /**
+	  * Il seguente metodo ritorna l'id dell'ultimo prodotto inserito e, in caso di errore, ritorna -1
+	  * 
+	  * @return id ultimo prodotto
+	  */
+	 public int getIdUltimoProdotto() {
+		 int idUltimoProdotto = 0;
+		 String query = "SELECT MAX(id_prodotto) FROM Prodotti";
+		 try {
+			 Statement sta = con.createStatement();
+			 ResultSet rs = sta.executeQuery(query);
+			 rs.next();
+			 idUltimoProdotto = rs.getInt(1);
+		 } catch (Exception e) {
+			 e.printStackTrace();
+		 }
+		 return idUltimoProdotto;
+	 }
 }

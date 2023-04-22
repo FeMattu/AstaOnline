@@ -9,7 +9,6 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.sql.Date;
-import java.util.LinkedList;
 import java.util.List;
 
 import gambit.Asta;
@@ -33,6 +32,7 @@ public class ServerTCPThread extends Thread{
 	private DataOutputStream writer;
 	private Resources resources;
 	static boolean inviato;
+	private Cliente utente;
 	
 	/**
 	 * <b>ServerTCPThread constructor</b>
@@ -80,6 +80,20 @@ public class ServerTCPThread extends Thread{
 				writer.writeBytes("OK\n");
 				break;
 			case "2":
+				String[] propProdotto = reader.readLine().split(":");
+				Prodotto p = new Prodotto(resources.getIdUltimoProdotto()+1,
+										  propProdotto[0],
+										  propProdotto[1],
+										  Float.parseFloat(propProdotto[3]),
+										  false,
+										  utente,
+										  Timestamp.valueOf(LocalDateTime.now()),
+										  propProdotto[2]);
+				if(resources.addProdotto(p)) {
+					writer.writeBytes("Prodotto inserito\n");
+				}else {
+					writer.writeBytes("Prodotto non inserito\n");
+				}
 				break;
 			case "0":
 				break;
@@ -88,7 +102,7 @@ public class ServerTCPThread extends Thread{
 				break;
 			}
 			
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -98,18 +112,20 @@ public class ServerTCPThread extends Thread{
     private boolean validazioneAccesso(String access) {
     	String[] parametri = access.split(":");
     	if(parametri.length == 2) {
-    		if(resources.getCliente(parametri[0]).getPassword().equals(parametri[1])) {
+    		utente = resources.getCliente(parametri[0]);
+    		if(utente.getPassword().equals(parametri[1])) {
     			return true;
     		}
     	}else if(parametri.length > 2){
-    		return resources.addCliente(new Cliente(
-	    				parametri[0], 
-	    				parametri[2], 
-	    				parametri[3],
-	    				Date.valueOf(LocalDate.now()),
-	    				parametri[5],
-	    				parametri[1], 
-	    				parametri[4]));
+    		utente = new Cliente(
+    				parametri[0], 
+    				parametri[2], 
+    				parametri[3],
+    				Date.valueOf(LocalDate.now()),
+    				parametri[5],
+    				parametri[1], 
+    				parametri[4]);
+    		return resources.addCliente(utente);
     	}
     	
     	return false;
@@ -137,9 +153,5 @@ public class ServerTCPThread extends Thread{
 		}
     	return false;
     }
-    
-    private static void stampaAsteDisponibili() {
-    	
-	}
     
 }

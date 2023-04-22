@@ -5,11 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.LinkedList;
 import java.util.Scanner;
-
-import gambit.Cliente;
 
 /**
  * <b>Client class</b>
@@ -83,10 +79,12 @@ public class Client {
 			scanner.nextLine();
 			desc = scanner.nextLine();
 			System.out.print("Categoria: ");
+			scanner.nextLine();
 			categoria = scanner.nextLine();
 			System.out.print("Prezzo di Base: ");
 			prezDiBase = scanner.nextFloat();
-			
+			writer.writeBytes(nome+":"+desc+":"+categoria+":"+prezDiBase+"\n");
+			System.out.println(reader.readLine());
 			break;
 		case 0:
 			break;

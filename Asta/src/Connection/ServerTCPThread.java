@@ -113,6 +113,7 @@ public class ServerTCPThread extends Thread{
     	String[] parametri = access.split(":");
     	if(parametri.length == 2) {
     		utente = resources.getCliente(parametri[0]);
+    		if(utente==null) return false;
     		if(utente.getPassword().equals(parametri[1])) {
     			return true;
     		}

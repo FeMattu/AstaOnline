@@ -27,7 +27,7 @@ public class Client {
 	private static String username;
 	private static String password;
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args){
 		try {
 			socket = new Socket("localhost", 5234);
 			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -57,47 +57,38 @@ public class Client {
 		
 		System.out.println("---\n---\n---");
 		int scelta = sceltaMenu();
-		writer.writeBytes(scelta+"\n");
-				
-		switch (scelta) {
-		case 1:
-			//Scegliendo questa, passiamo alla scelta dell'asta alla quale prendere parte
-			System.out.println("---\nElenco aste a cui puoi partecipare:");
-			String asta = reader.readLine();
-			while(!asta.equals("OK")) {
-				System.out.println(asta);
-				asta = reader.readLine();
-			}
-			break;
-		case 2:
-			//Scegliendo questa, inseriamo un prodotto che verrà messo all'asta
-			String nome,desc,categoria;
-			float prezDiBase;
-			System.out.println("---\nInserisci un prodotto:\n---");
-			System.out.print("Nome: ");
-			scanner.nextLine();
-			nome = scanner.nextLine();
-			System.out.print("Descrizione: ");
-			scanner.nextLine();
-			desc = scanner.nextLine();
-			System.out.print("Categoria: ");
-			scanner.nextLine();
-			categoria = scanner.nextLine();
-			System.out.print("Prezzo di Base: ");
-			prezDiBase = scanner.nextFloat();
-			writer.writeBytes(nome+":"+desc+":"+categoria+":"+prezDiBase+"\n");
-			System.out.println(reader.readLine());
-			break;
-		case 0:
-			break;
-		default:
-			System.out.println("Scelta non valida, reinserire.");
-			break;
-		}
 		
-		reader.close();
-		writer.close();
-		socket.close();
+		try {
+			writer.writeBytes(scelta+"\n");
+			switch (scelta) {
+			case 1:
+				//Scegliendo questa, passiamo alla scelta dell'asta alla quale prendere parte
+				System.out.println("---\nElenco aste a cui puoi partecipare:");
+				String asta = reader.readLine();
+				while(!asta.equals("OK")) {
+					System.out.println(asta);
+					asta = reader.readLine();
+				}
+				break;
+			case 2:
+				//Scegliendo questa, inseriamo un prodotto che verrà messo all'asta
+				aggiuntaProdotto();
+				break;
+			case 0:
+				break;
+			default:
+				System.out.println("Scelta non valida, reinserire.");
+				break;
+			}
+			
+			reader.close();
+			writer.close();
+			socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		
 		scanner.close();
 	}
 	
@@ -189,5 +180,30 @@ public class Client {
 		return s;
 	}
 	
+	private static void aggiuntaProdotto() throws IOException {
+		String nome,desc,categoria;
+		float prezDiBase;
+		System.out.println("---\nInserisci un prodotto:\n---");
+		
+		System.out.print("Nome: ");
+		scanner.nextLine();
+		nome = scanner.nextLine();
+		System.out.println(nome);
+		
+		System.out.print("Descrizione: ");
+		desc = scanner.nextLine();
+		System.out.println(desc);
+		
+		System.out.print("Categoria: ");
+		categoria = scanner.next();
+		System.out.println(categoria);
+		
+		System.out.print("Prezzo di Base: ");
+		prezDiBase = scanner.nextFloat();
+		System.out.println(prezDiBase);
+		
+		writer.writeBytes(nome+":"+desc+":"+categoria+":"+prezDiBase+"\n");
+		System.out.println(reader.readLine());
+	}
 
 }

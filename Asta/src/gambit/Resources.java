@@ -141,10 +141,10 @@ public class Resources {
 	public int getIdCategoria(String categoria) {
 		
 		String[] categorie = getCategorie();
-		String query = "SELECT id_categoria FROM Categorie WHERE categoria='"+categoria+"';";
+		String query = "SELECT id_categoria FROM Categorie WHERE categoria=";
 		for (String string : categorie) {
 			if(string.equalsIgnoreCase(categoria)) {
-				query = query+string;
+				query = query+"'"+string+"'";
 				break;
 			}
 		}
@@ -514,9 +514,8 @@ public class Resources {
 				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				return null;
 			}
-			return null;
 		}
 	}
 	

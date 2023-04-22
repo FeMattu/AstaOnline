@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.Scanner;
 
+import gambit.Resources;
+
 /**
  * <b>Client class</b>
  * @author <i>Federico Mattucci<br>
@@ -27,7 +29,7 @@ public class Client {
 
 	public static void main(String[] args) throws Exception {
 		try {
-			socket = new Socket("localhost", 5000);
+			socket = new Socket("localhost", 5234);
 			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			writer = new DataOutputStream(socket.getOutputStream());
 		} catch (Exception e) {
@@ -56,7 +58,7 @@ public class Client {
 		System.out.println("---\n---\n---");
 		int scelta = sceltaMenu();
 		writer.writeBytes(scelta+"\n");
-		
+				
 		switch (scelta) {
 		case 1:
 			//Scegliendo questa, passiamo alla scelta dell'asta alla quale prendere parte

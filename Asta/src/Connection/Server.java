@@ -43,7 +43,7 @@ public class Server {
 		
 		
 		try {
-			serverSocket = new ServerSocket(5000);
+			serverSocket = new ServerSocket(5234);
 			while (true) {
 				System.out.println("Sono in attesa di accettare un client");
 

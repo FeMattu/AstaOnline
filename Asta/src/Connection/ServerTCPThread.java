@@ -78,6 +78,11 @@ public class ServerTCPThread extends Thread{
 					writer.writeBytes(aste.get(i).toString()+"\n");
 				}
 				writer.writeBytes("OK\n");
+				//Da qui, gestione della scelta dell'asta alla quale si vuole partecipare
+				int astaScelta = Integer.parseInt(reader.readLine());
+				if(validazioneAstaScelta(astaScelta, aste)) {
+					System.out.println("Client ha accesso all'asta.");
+				}
 				break;
 			case "2":
 				String[] propProdotto = reader.readLine().split(":");
@@ -154,5 +159,14 @@ public class ServerTCPThread extends Thread{
 		}
     	return false;
     }
+    
+    private boolean validazioneAstaScelta(int id, List<Asta> aste) {
+    	for(int i=0;i<aste.size();i++) {
+    		if(aste.get(i).getId_asta() == id) {
+    			return true;
+    		}
+    	}
+		return false;
+	}
     
 }

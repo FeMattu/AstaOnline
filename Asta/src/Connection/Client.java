@@ -63,12 +63,7 @@ public class Client {
 			switch (scelta) {
 			case 1:
 				//Scegliendo questa, passiamo alla scelta dell'asta alla quale prendere parte
-				System.out.println("---\nElenco aste a cui puoi partecipare:");
-				String asta = reader.readLine();
-				while(!asta.equals("OK")) {
-					System.out.println(asta);
-					asta = reader.readLine();
-				}
+				partecipaAdUnAsta();
 				break;
 			case 2:
 				//Scegliendo questa, inseriamo un prodotto che verrà messo all'asta
@@ -178,6 +173,18 @@ public class Client {
 		menu();
 		int s = scanner.nextInt();
 		return s;
+	}
+	
+	private static void partecipaAdUnAsta() throws IOException {
+		System.out.println("---\nElenco aste a cui puoi partecipare:");
+		String asta = reader.readLine();
+		while(!asta.equals("OK")) {
+			System.out.println(asta);
+			asta = reader.readLine();
+		}
+		System.out.print("A quale asta vuoi partecipare (ID)?: ");
+		int idAstaScelta = scanner.nextInt();
+		writer.writeBytes(idAstaScelta+"\n");
 	}
 	
 	private static void aggiuntaProdotto() throws IOException {

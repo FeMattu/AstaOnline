@@ -144,7 +144,6 @@ public class ServerTCPThread extends Thread{
      */
     private boolean sendAste() {
     	List<Asta> currentGambits = resources.getCurrentGambits();
-    	
     	try {
     		for (Asta asta : currentGambits) {
     			Prodotto p = asta.getProdotto();

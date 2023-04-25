@@ -84,7 +84,7 @@ public class Asta {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "Id_asta: "+id_asta+"\tIp: "+ip;
+		return "Id_asta: "+id_asta+"\tProdotto: "+prodotto.getNome();
 	}
 
 }

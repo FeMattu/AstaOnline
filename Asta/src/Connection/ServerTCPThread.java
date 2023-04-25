@@ -85,10 +85,10 @@ public class ServerTCPThread extends Thread {
 					// Da qui, gestione della scelta dell'asta alla quale si vuole partecipare
 					int astaScelta = Integer.parseInt(reader.readLine());
 					if (validazioneAstaScelta(astaScelta, aste)) {
-						System.out.println("Client ha accesso all'asta.");
+						System.out.println("---\nClient ha accesso all'asta.");
 						writer.writeBytes("Hai effettuato l'accesso all'asta\n");
 					} else {
-						System.out.println("Client non ha effettuato accesso all'asta.");
+						System.out.println("---\nClient non ha effettuato accesso all'asta.");
 						writer.writeBytes("Non hai effettuato l'accesso all'asta\n");
 					}
 					break;

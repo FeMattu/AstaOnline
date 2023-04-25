@@ -66,7 +66,7 @@ public class Client {
 				case 1:
 					// Scegliendo questa, passiamo alla scelta dell'asta alla quale prendere parte
 					partecipaAdUnAsta();
-					System.out.println(reader.readLine());
+					System.out.println("---\n"+reader.readLine());
 					break;
 				case 2:
 					// Scegliendo questa, inseriamo un prodotto che verrà messo all'asta

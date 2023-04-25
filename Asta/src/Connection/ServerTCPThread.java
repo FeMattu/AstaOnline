@@ -32,6 +32,7 @@ public class ServerTCPThread extends Thread {
 	private BufferedReader reader;
 	private DataOutputStream writer;
 	private Resources resources;
+	static boolean inviato;
 	private Cliente utente;
 
 	/**
@@ -75,7 +76,6 @@ public class ServerTCPThread extends Thread {
 			do {
 				choice = reader.readLine();
 				switch (choice) {
-				//Caso nel quale si voglia partecipare ad un asta
 				case "1":
 					List<Asta> aste = resources.getCurrentGambits();
 					for (int i = 0; i < aste.size(); i++) {
@@ -83,18 +83,15 @@ public class ServerTCPThread extends Thread {
 					}
 					writer.writeBytes("OK\n");
 					// Da qui, gestione della scelta dell'asta alla quale si vuole partecipare
-					int idAstaScelta = Integer.parseInt(reader.readLine());
-					if (validazioneAstaScelta(idAstaScelta, aste)) {
+					int astaScelta = Integer.parseInt(reader.readLine());
+					if (validazioneAstaScelta(astaScelta, aste)) {
 						System.out.println("---\nClient ha accesso all'asta.");
 						writer.writeBytes("Hai effettuato l'accesso all'asta\n");
-						//Passaggio a server delle informazioni per eseguire connessione UDP a asta
-						new ThreadAsta(getAstaScelta(idAstaScelta, aste),resources).start();
 					} else {
 						System.out.println("---\nClient non ha effettuato accesso all'asta.");
 						writer.writeBytes("Non hai effettuato l'accesso all'asta\n");
 					}
 					break;
-				//Caso nel quale si voglia aggiungere un prodotto
 				case "2":
 					String[] propProdotto = reader.readLine().split(":");
 					Prodotto p = new Prodotto(resources.getIdUltimoProdotto() + 1, propProdotto[0], propProdotto[1],
@@ -106,11 +103,9 @@ public class ServerTCPThread extends Thread {
 						writer.writeBytes("Prodotto non inserito\n");
 					}
 					break;
-				//Caso nel quale si voglia uscire dal programma
 				case "0":
 					System.out.println("Client non ha richiesto nulla.");
 					break;
-				//Caso nel quale si inserisca una scelta sbagliata
 				default:
 					System.out.println("Scelta invalida, reinserisci.");
 					break;
@@ -147,7 +142,7 @@ public class ServerTCPThread extends Thread {
 	 * id_asta:nomeProdotto:categoria:prezzoCorrente;
 	 * 
 	 * @return
-	 *
+	 */
 	private boolean sendAste() {
 		List<Asta> currentGambits = resources.getCurrentGambits();
 		try {
@@ -161,7 +156,7 @@ public class ServerTCPThread extends Thread {
 			e.printStackTrace();
 		}
 		return false;
-	}*/
+	}
 
 	private boolean validazioneAstaScelta(int id, List<Asta> aste) {
 		for (int i = 0; i < aste.size(); i++) {

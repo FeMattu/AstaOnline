@@ -70,15 +70,15 @@ public class ThreadAsta extends Thread{
              
         
         //per il test predno un client a caso
-        int i = (int) (Math.random() * 100);     
-        asta.setVincitore(resources.getClienti().get(i));
+        //int i = (int) (Math.random() * 100);     
+        //asta.setVincitore(resources.getClienti().get(i));
         
         
         //fine asta
         //aggiunta data e ora finea asta
-        asta.setDataOra_fine(Timestamp.valueOf(LocalDateTime.now()));
-        resources.getCurrentGambits().remove(asta);
-        resources.addAstaIntoDB(asta);
+        //asta.setDataOra_fine(Timestamp.valueOf(LocalDateTime.now()));
+        //resources.getCurrentGambits().remove(asta);
+        //resources.addAstaIntoDB(asta);
     }
     
     public void sendUDPMessage(String message, String ipAddress, int port) throws IOException {

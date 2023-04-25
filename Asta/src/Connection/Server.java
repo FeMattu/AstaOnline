@@ -51,6 +51,7 @@ public class Server {
 				System.out.println("Client accettato: " + comunicationSocketFromServer.getPort());
 
 				new ServerTCPThread(comunicationSocketFromServer, resources).start();
+				
 			}
 
 		} catch (IOException e) {

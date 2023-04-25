@@ -32,8 +32,6 @@ public class ThreadAsta extends Thread{
 
     private Resources resources;
     private Asta asta;
-	private DatagramSocket socket;
-	private InetAddress group;
     
     /**
      * <b>ThreadAsta constructor</b>
@@ -45,6 +43,14 @@ public class ThreadAsta extends Thread{
         this.resources = resources;
     }
 
+    public Asta getAsta() {
+		return asta;
+	}
+    
+    public Resources getResources() {
+		return resources;
+	}
+    
     /**
      * <b>Run method for ThreadAsta class</b>
      */
@@ -66,7 +72,6 @@ public class ThreadAsta extends Thread{
         //per il test predno un client a caso
         int i = (int) (Math.random() * 100);     
         asta.setVincitore(resources.getClienti().get(i));
-        
         
         
         //fine asta

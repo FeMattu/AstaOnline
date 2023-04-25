@@ -62,7 +62,6 @@ public class Client {
 		do {
 			System.out.println("---\n---\n---");
 			sceltaMenu = sceltaMenu();
-
 			try {
 				writer.writeBytes(sceltaMenu + "\n");
 				switch (sceltaMenu) {

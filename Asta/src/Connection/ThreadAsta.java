@@ -56,6 +56,7 @@ public class ThreadAsta extends Thread{
         
 		try {
 			sendUDPMessage("Ciao ti sei connesso pezzo di merda", "224.0.0.5", 5550);
+			sendUDPMessage("OK", "224.0.0.5", 5550);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

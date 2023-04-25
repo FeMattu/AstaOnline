@@ -83,10 +83,12 @@ public class ServerTCPThread extends Thread {
 					}
 					writer.writeBytes("OK\n");
 					// Da qui, gestione della scelta dell'asta alla quale si vuole partecipare
-					int astaScelta = Integer.parseInt(reader.readLine());
-					if (validazioneAstaScelta(astaScelta, aste)) {
+					int idAstaScelta = Integer.parseInt(reader.readLine());
+					if (validazioneAstaScelta(idAstaScelta, aste)) {
 						System.out.println("---\nClient ha accesso all'asta.");
+						//Passaggio a server delle informazioni per eseguire connessione UDP a asta
 						writer.writeBytes("Hai effettuato l'accesso all'asta\n");
+						
 					} else {
 						System.out.println("---\nClient non ha effettuato accesso all'asta.");
 						writer.writeBytes("Non hai effettuato l'accesso all'asta\n");
@@ -142,7 +144,7 @@ public class ServerTCPThread extends Thread {
 	 * id_asta:nomeProdotto:categoria:prezzoCorrente;
 	 * 
 	 * @return
-	 */
+	 *
 	private boolean sendAste() {
 		List<Asta> currentGambits = resources.getCurrentGambits();
 		try {
@@ -156,7 +158,7 @@ public class ServerTCPThread extends Thread {
 			e.printStackTrace();
 		}
 		return false;
-	}
+	}*/
 
 	private boolean validazioneAstaScelta(int id, List<Asta> aste) {
 		for (int i = 0; i < aste.size(); i++) {
@@ -166,5 +168,14 @@ public class ServerTCPThread extends Thread {
 		}
 		return false;
 	}
-
+	
+	private Asta getAstaScelta(int id, List<Asta> aste) {
+		for (int i = 0; i < aste.size(); i++) {
+			if (aste.get(i).getId_asta() == id) {
+				return aste.get(i);
+			}
+		}
+		return null;
+	}
+	
 }

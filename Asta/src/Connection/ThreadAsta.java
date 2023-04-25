@@ -43,14 +43,6 @@ public class ThreadAsta extends Thread{
     public ThreadAsta(Asta asta, Resources resources){
         this.asta = asta;
         this.resources = resources;
-		try {
-			socket = new DatagramSocket();
-			group = InetAddress.getByName(asta.getIp());
-		} catch (SocketException | UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
     }
 
     /**
@@ -63,7 +55,7 @@ public class ThreadAsta extends Thread{
         //System.out.println(asta);
         
 		try {
-			sendUDPMessage("Ciao ti sei connesso pezzo di merda");
+			sendUDPMessage("Ciao ti sei connesso pezzo di merda", "224.0.0.5", 5550);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -83,7 +75,9 @@ public class ThreadAsta extends Thread{
         resources.addAstaIntoDB(asta);
     }
     
-    public void sendUDPMessage(String message) throws IOException {
+    public void sendUDPMessage(String message, String ipAddress, int port) throws IOException {
+    	DatagramSocket socket = new DatagramSocket();
+		InetAddress group = InetAddress.getByName("224.0.0.5");
 		byte[] msg = message.getBytes();
 		DatagramPacket packet = new DatagramPacket(msg, msg.length, group, 5550);
 		socket.send(packet);

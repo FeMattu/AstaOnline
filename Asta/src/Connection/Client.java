@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.DatagramPacket;
+import java.net.InetAddress;
+import java.net.MulticastSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -38,7 +41,7 @@ public class Client {
 			e.printStackTrace();
 		}
 
-		System.out.println("Connessione al server...");
+		System.out.println("Connessionu al server...");
 		// Se non viene effettuato l'accesso al server il programma termina
 		if (!accessoServer()) {
 			try {
@@ -90,6 +93,27 @@ public class Client {
 		} while (sceltaMenu == 2);
 
 		scanner.close();
+	}
+
+	private static void receiveUDPMessage(String AddressIp, int port) throws IOException {
+		// TODO Auto-generated method stub
+		byte[] buffer = new byte[1024];
+		MulticastSocket socket = new MulticastSocket(5550);
+		InetAddress group = InetAddress.getByName("224.0.0.5");
+		socket.joinGroup(group);
+		while (true) {
+			System.out.println("Waiting for multicast message...");
+			DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+			socket.receive(packet);
+			String msg = new String(packet.getData(), packet.getOffset(), packet.getLength());
+			System.out.println("[Multicast UDP message received] >> " + msg);
+			if ("OK".equals(msg)) {
+				System.out.println("No more message. Exiting : " + msg);
+				break;
+			}
+		}
+		socket.leaveGroup(group);
+		socket.close();
 	}
 
 	/**
@@ -193,6 +217,7 @@ public class Client {
 		System.out.print("A quale asta vuoi partecipare (ID)?: ");
 		int idAstaScelta = scanner.nextInt();
 		writer.writeBytes(idAstaScelta + "\n");
+		receiveUDPMessage("224.0.0.5", 5550);
 	}
 
 	private static void aggiuntaProdotto() throws IOException {
@@ -220,5 +245,5 @@ public class Client {
 		writer.writeBytes(nome + ":" + desc + ":" + categoria + ":" + prezDiBase + "\n");
 		System.out.println(reader.readLine());
 	}
-
+	
 }

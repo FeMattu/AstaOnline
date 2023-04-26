@@ -29,7 +29,7 @@ public class Client {
 	private static DataOutputStream writer;
 	private static Scanner scanner = new Scanner(System.in);
 	private static String username;
-	private static String password;
+	private static String password; 
 
 	public static void main(String[] args) {
 		try {

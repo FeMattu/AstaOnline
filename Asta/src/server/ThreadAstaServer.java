@@ -26,7 +26,7 @@ import classi.Asta;
  * 			  Giacomo Diridoni</i>
  *
  */ 
-public class ThreadAsta extends Thread{
+public class ThreadAstaServer extends Thread{
 
     private Resources resources;
     private Asta asta;
@@ -38,7 +38,7 @@ public class ThreadAsta extends Thread{
      * @param asta -> asta istance
      * @param r -> resources istance
      */
-    public ThreadAsta(Asta asta, Resources resources){
+    public ThreadAstaServer(Asta asta, Resources resources){
         this.asta = asta;
         this.resources = resources;
         this.nuovaOfferta = 0;

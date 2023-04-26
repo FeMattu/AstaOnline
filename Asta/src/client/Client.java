@@ -195,7 +195,7 @@ public class Client {
 		System.out.print("A quale asta vuoi partecipare (ID)?: ");
 		int idAstaScelta = scanner.nextInt();
 		writer.writeBytes(idAstaScelta + "\n");
-		receiveUDPMessage("224.0.0.5", 5550);
+		//receiveUDPMessage("224.0.0.5", 5550);
 	}
 
 	private static void aggiuntaProdotto() throws IOException {
@@ -222,34 +222,6 @@ public class Client {
 
 		writer.writeBytes(nome + ":" + desc + ":" + categoria + ":" + prezDiBase + "\n");
 		System.out.println(reader.readLine());
-	}
-
-	private static void receiveUDPMessage(String AddressIp, int port) throws IOException {
-		// TODO Auto-generated method stub
-		byte[] buffer = new byte[1024];
-		MulticastSocket socket = new MulticastSocket(5550);
-		InetAddress group = InetAddress.getByName("224.0.0.5");
-		socket.joinGroup(group);
-		System.out.println("Aspettando di connettersi all'asta...");
-		DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-		System.out.println("---\n---\n---\n***INIZIO ASTA***\n");
-		float priceUp;
-		while (true) {
-			socket.receive(packet);
-			String msg = new String(packet.getData(), packet.getOffset(), packet.getLength());
-			if (!"OK".equals(msg)) {
-				if(msg.equals("-")) {
-					System.out.println("Di quanto vuoi incrementare l'offerta?: ");
-					priceUp = scanner.nextFloat();
-				}else {
-					System.out.println(msg);
-				}
-			} else {
-				break;
-			}
-		}
-		socket.leaveGroup(group);
-		socket.close();
 	}
 
 }

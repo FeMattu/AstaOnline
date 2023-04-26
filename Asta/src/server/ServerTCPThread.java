@@ -87,8 +87,8 @@ public class ServerTCPThread extends Thread {
 						System.out.println("---\nClient ha accesso all'asta.");
 						writer.writeBytes("Hai effettuato l'accesso all'asta\n");
 						
-						Asta astaScelta = getAstaScelta(idAstaScelta, aste);
-						new ThreadAsta(astaScelta,resources).start();
+						//Asta astaScelta = getAstaScelta(idAstaScelta, aste);
+						//new ThreadAstaServer(astaScelta,resources).start();
 						
 					} else {
 						System.out.println("---\nClient non ha effettuato accesso all'asta.");

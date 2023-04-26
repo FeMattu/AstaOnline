@@ -39,7 +39,7 @@ public class GestisciAste extends Thread{
     	while(resources.getIndirizziMulticast().size() > 0) {
     		Asta asta = new Asta(id, prodotti.get(id < 1000 ? id : id%1000), 
     				resources.getIndirizziMulticast().remove(0));
-    		ThreadAsta threadAsta = new ThreadAsta(asta, resources);
+    		ThreadAstaServer threadAsta = new ThreadAstaServer(asta, resources);
     		threadAsta.start();
     		resources.addActiveAsta(asta);
     		id++;

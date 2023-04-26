@@ -35,13 +35,13 @@ public class GestisciAste extends Thread{
     	while(resources.getIndirizziMulticast().size() > 0) {
     		Asta asta = new Asta(id, prodotti.get(id < 1000 ? id : id%1000), 
     				resources.getIndirizziMulticast().remove(0));
-    		//ThreadAsta threadAsta = new ThreadAsta(asta, resources);
-    		//threadAsta.run();
+    		ThreadAsta threadAsta = new ThreadAsta(asta, resources);
+    		threadAsta.start();
     		resources.addActiveAsta(asta);
     		id++;
     	}
     	
-    	if(resources.getCurrentGambits().size() == 30)
+    	if(resources.getCurrentGambits().size() == 5)
     		System.out.println("Creazione aste avventua con successo");
     	
     }

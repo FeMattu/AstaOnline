@@ -62,9 +62,9 @@ public class ThreadAsta extends Thread{
         super.run();
         //settaggio data e ora inizio asta       
         asta.setDataOra_inizio(Timestamp.valueOf(LocalDateTime.now()));
-        System.out.println(asta);
+        //System.out.println(asta);
         
-       
+        
         
         
         

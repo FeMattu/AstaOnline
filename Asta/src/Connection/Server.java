@@ -36,10 +36,13 @@ public class Server {
 
 		Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 		
-		resources = new Resources(databaseURL, "gambit", "test", "trK5iuHPLQNLDZ9J");
+		resources = new Resources(databaseURL, "gambit", "test", "trK5iuHPLQNLDZ9J");	// Connessione database
 		gestioneAste = new GestisciAste(resources);
-		gestioneAste.run();
+		gestioneAste.start();
 		
+		/*
+		 * Prendi un set di oggetti, programmi le aste 
+		 */
 		
 		
 		try {

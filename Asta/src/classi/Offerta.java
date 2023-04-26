@@ -3,8 +3,6 @@ package classi;
 import java.sql.Date;
 import java.sql.Timestamp;
 
-import client.Cliente;
-
 public class Offerta {
 	private int id_offerta;
 	private Timestamp DataOraOfferta;

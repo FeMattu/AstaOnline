@@ -5,8 +5,6 @@ import java.sql.Timestamp;
 
 import javax.naming.directory.InvalidAttributesException;
 
-import client.Cliente;
-
 public class Prodotto {
 
     private final int ID_PRODOTTO;

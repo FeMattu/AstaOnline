@@ -7,8 +7,6 @@ import java.util.List;
 
 import javax.naming.directory.InvalidAttributesException;
 
-import client.Cliente;
-
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;

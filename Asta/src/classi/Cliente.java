@@ -1,4 +1,4 @@
-package client;
+package classi;
 
 import java.sql.Date;
 import java.time.LocalDate;

@@ -12,8 +12,8 @@ import java.sql.Date;
 import java.util.List;
 
 import classi.Asta;
+import classi.Cliente;
 import classi.Prodotto;
-import client.Cliente;
 
 /**
  * <b>ServerTCPThread class</b>

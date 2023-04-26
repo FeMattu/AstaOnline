@@ -12,7 +12,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import classi.Asta;
-import client.Cliente;
+import classi.Cliente;
 import server.Resources;
 
 class tt {

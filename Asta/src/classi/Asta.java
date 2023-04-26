@@ -33,10 +33,6 @@ public class Asta {
 		this.prodotto = prodotto;
 		this.prezzoCorrente=prodotto.getPrezzoDiBase();
 	}
-	
-	public Asta(String toString) {
-		
-	}
 
 	public int getId_asta() {
 		return id_asta;
@@ -90,5 +86,5 @@ public class Asta {
 		// TODO Auto-generated method stub
 		return "Id_asta:"+id_asta+"|Prodotto:"+prodotto.getNome();
 	}
-
+	
 }

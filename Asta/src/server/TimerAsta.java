@@ -6,10 +6,10 @@ public class TimerAsta extends Thread{
 	
 	private int i = 20;
 	private static boolean continua = false, finito = false;
-	private AstaDataServer astaDataServer;
+	private AstaDataServer asta;
 	
 	public TimerAsta(AstaDataServer asta) {
-		this.astaDataServer = asta;
+		this.asta = asta;
 	}
 	
 	public void run() {
@@ -17,10 +17,10 @@ public class TimerAsta extends Thread{
 		super.run();
 		
 		// Finchè l'asta non è finita
-		while (!this.astaDataServer.isEnded()) {
+		while (!this.asta.isEnded()) {
 			
 			// Se c'è un offerta comincio a contare per fermare l'asta
-			if (this.astaDataServer.getOffertaMaggiore() != null) {
+			if (this.asta.getOffertaMaggiore() != null) {
 				// Conto
 				
 				if(isContinua()) {
@@ -37,7 +37,7 @@ public class TimerAsta extends Thread{
 	                }
 	            }else {
 	            	// Imposto la fine dell'asta
-	                this.astaDataServer.endAsta();
+	                this.asta.endAsta();
 	                break;
 	            }
 			}

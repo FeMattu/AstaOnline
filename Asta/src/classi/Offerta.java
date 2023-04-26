@@ -23,21 +23,22 @@ public class Offerta {
 	}
 	
 	/**
-	 * Costruttore di offerta per inviare i dati
-	 * 
-	 * @param offerta Valore dell'offerta
-	 * @param offerente Chi ha fatto l'offerta che verrà inviata
-	 * @param asta Asta di riferimento
-	 * @param dataOraOfferta Momento in cui è stata fatta l'offerta
-	 */
-	public Offerta(float offerta, Cliente offerente, Asta asta, Timestamp dataOraOfferta){
-		super();
-		this.id_offerta = -1;	// In questo momento l'id non è necessario
-		this.DataOraOfferta = dataOraOfferta;
-		this.offerta = offerta;
-		this.offerente = offerente;
-		this.asta = asta;
-	}
+     * Costruttore di offerta per inviare i dati
+     * 
+     * @param offerta Valore dell'offerta
+     * @param offerente Chi ha fatto l'offerta che verrà inviata
+     * @param asta Asta di riferimento
+     * @param dataOraOfferta Momento in cui è stata fatta l'offerta
+     * 
+     * Mando meno parametri in quanto ogni client è predisposto per gestire una sola asta per volta, pertanto, non risulta necessario inviare dati relativi all'asta per cui è riferita l'offerta
+     */
+    public Offerta(float offerta, Cliente offerente, Timestamp dataOraOfferta){
+        super();
+        this.id_offerta = -1;    // In questo momento l'id non è necessario
+        this.DataOraOfferta = dataOraOfferta;
+        this.offerta = offerta;
+        this.offerente = offerente;
+    }
 	
 	public Offerta(String toString) {
 		/*
@@ -82,10 +83,6 @@ public class Offerta {
 					
 				case "offerente":
 					this.offerente = new Cliente(attributo[1]);
-					break;
-					
-				case "Asta":
-					this.asta = new Asta(attributo[1]);
 					break;
 					
 				default:

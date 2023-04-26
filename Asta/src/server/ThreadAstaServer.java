@@ -22,17 +22,23 @@ public class ThreadAstaServer extends Thread{
 
     private Resources resources;
     private Asta asta;
-    private AstaDataServer astaDataServer;
+    private AstaDataServer astaData;
     private float nuovaOfferta, precOfferta;
     private TimerAsta timer;
     
+    /**
+     * <b>ThreadAsta constructor</b>
+     * @param asta -> asta istance
+     * @param r -> resources istance
+     */
+    
     // TODO USARE QUESTO COSTRUTTORE QUA INVECE CHE DI QUELLO SOPRA
-    public ThreadAstaServer(AstaDataServer astaDataServer, Resources resources){
-        this.astaDataServer = astaDataServer;
+    public ThreadAstaServer(AstaDataServer asta, Resources resources){
+        this.astaData = asta;
         this.resources = resources;
         this.nuovaOfferta = 0;
         this.precOfferta = 0;
-        this.timer = new TimerAsta(this.astaDataServer);
+        this.timer = new TimerAsta(this.astaData);
     }
     
     /**
@@ -57,7 +63,7 @@ public class ThreadAstaServer extends Thread{
 			// Alla prima offerta inizia l'asta
 			
 			// Finchè l'asta non è finita
-			while (!this.astaDataServer.isEnded()) {
+			while (!this.astaData.isEnded()) {
 				// Deve ricevere il pacchetto
 				
 				byte[] pacchetto = new byte[1024];	// SE STONA GUARDARE QUA
@@ -67,13 +73,13 @@ public class ThreadAstaServer extends Thread{
 					socket.receive(packet);
 					
 					// All'interno viene passato un toString di offerta
-					this.astaDataServer.setWaiting(false);	// Comincio a contare
+					this.astaData.setWaiting(false);	// Comincio a contare
 				}
 				catch (IOException e) {
 	                e.printStackTrace();
 	            }
 				
-				if (this.astaDataServer.isEnded()) {
+				if (this.astaData.isEnded()) {
 					
 				}
 				else {
@@ -82,23 +88,23 @@ public class ThreadAstaServer extends Thread{
 					String input = new String(packet.getData()).substring(0, packet.getLength());
 					Offerta o = new Offerta(input);
 					
-					if (this.astaDataServer.getOffertaMaggiore() != null) {
+					if (this.astaData.getOffertaMaggiore() != null) {
 						// Devo validare l'offerta, quindi devo vedere che sia stato offerto di più rispetto a prima
 						
-						if (o.getOfferta() > this.astaDataServer.getOffertaMaggiore().getOfferta()) {
+						if (o.getOfferta() > this.astaData.getOffertaMaggiore().getOfferta()) {
 							// L'offerta è valida
 							
-							this.astaDataServer.setOffertaMaggiore(o);
+							this.astaData.setOffertaMaggiore(o);
 						}
 						// Se l'offerta non è valida la ignoro
 						
 					}
 					else {
-						this.astaDataServer.setOffertaMaggiore(o);
+						this.astaData.setOffertaMaggiore(o);
 					}
 					
 					// Comincio ad aspettare
-					this.astaDataServer.setWaiting(true);
+					this.astaData.setWaiting(true);
 				}
 				
 			}
@@ -106,7 +112,7 @@ public class ThreadAstaServer extends Thread{
 			// L'asta è finita, dichiaro il vincitore
 			
 			
-			byte[] msg = ("Il vincitore è:" + this.astaDataServer.getOffertaMaggiore().getOfferente().getUSERNAME()).getBytes();
+			byte[] msg = ("Il vincitore è:" + this.astaData.getOffertaMaggiore().getOfferente().getUSERNAME()).getBytes();
 			packet = new DatagramPacket(msg, msg.length, group, 5550);
 			socket.send(packet);
 		

@@ -1,6 +1,7 @@
 package client;
 
 import java.io.BufferedReader;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -9,6 +10,8 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.Socket;
 import java.util.Scanner;
+
+import client.AstaDataClient;
 
 import server.Resources;
 
@@ -41,7 +44,7 @@ public class Client {
 			e.printStackTrace();
 		}
 
-		System.out.println("Connessione al server...");
+		System.out.println("Connessionu al server...");
 		// Se non viene effettuato l'accesso al server il programma termina
 		if (!accessoServer()) {
 			try {
@@ -104,8 +107,8 @@ public class Client {
 		int scelta = -1;
 		while (true) {
 			System.out.println("1 -> Accedi");
-			System.out.println("2 -> Registrati");
-			System.out.println("0 -> Esci");
+			System.out.println("2 -> registrati");
+			System.out.println("0 -> exit");
 			System.out.print("Scelta: ");
 			scelta = scanner.nextInt();
 			switch (scelta) {
@@ -186,15 +189,38 @@ public class Client {
 	}
 
 	private static void partecipaAdUnAsta() throws IOException {
-		System.out.println("---\nElenco aste a cui puoi partecipare:\n");
+		System.out.println("---\nElenco aste a cui puoi partecipare:");
 		String asta = reader.readLine();
+		
 		while (!asta.equals("OK")) {
 			System.out.println(asta);
 			asta = reader.readLine();
 		}
+		
 		System.out.print("A quale asta vuoi partecipare (ID)?: ");
 		int idAstaScelta = scanner.nextInt();
 		writer.writeBytes(idAstaScelta + "\n");
+		
+		
+		// Ri prendo il pacchetto
+		
+		String ip = reader.readLine();
+		
+		String[] dati = ip.split(":");
+			// 0 -> ip
+			// 1 -> prezzo di base
+		
+		ConnettoreAsta c = new ConnettoreAsta(new AstaDataClient(Float.parseFloat(dati[1]), dati[0]));
+		
+		c.start();
+		
+		try {
+			c.join();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
 		//receiveUDPMessage("224.0.0.5", 5550);
 	}
 

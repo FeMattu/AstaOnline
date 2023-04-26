@@ -10,13 +10,11 @@ import classi.Cliente;
 
 public class ThreadAstaClient extends Thread{
 
-	AstaDataClient astaDataClient;
-	Cliente cliente;
+	AstaDataClient astaData;
 	
-    ThreadAstaClient(AstaDataClient astaDataClient, Cliente cliente) {
+    ThreadAstaClient(AstaDataClient astaData) {
         // TODO Auto-generated constructor stub
-    	this.astaDataClient = astaDataClient;
-    	this.cliente = cliente;
+    	this.astaData = astaData;
     }
 
     public void run() {
@@ -30,7 +28,7 @@ public class ThreadAstaClient extends Thread{
             socket.joinGroup(group);
             
             // Itero finchè l'asta non è finita
-            while (!this.astaDataClient.isEnded()) {
+            while (!this.astaData.isEnded()) {
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
                 socket.receive(packet);
                 String msg = new String(packet.getData(), packet.getOffset(), packet.getLength());
@@ -40,10 +38,8 @@ public class ThreadAstaClient extends Thread{
                 if (msg.contains("vincitore")) {
                 	// stato mandato il vincitore
                 	
-                	String[] vincitore = msg.split(":");
-                		// Ad indice 1 ho il vincitore
                 	
-                	if (vincitore[1].equals(this.cliente.getUSERNAME())) {
+                	if (msg.contains(this.astaData.getMeStesso().getUSERNAME())){
                 		// HO VINTO IO
                 		System.out.println("HAI ACQUISTATO IL PRODOTTO");
                 	}
@@ -55,10 +51,10 @@ public class ThreadAstaClient extends Thread{
                 	// una nuova offerta
                 	
                 	Offerta o = new Offerta(msg);
-                	if (o.getOfferta() > this.astaDataClient.getOffertaMaggiore().getOfferta()) {
+                	if (o.getOfferta() > this.astaData.getOffertaMaggiore().getOfferta()) {
                 		// L'offerta è valida
                 		
-                		this.astaDataClient.setOffertaMaggiore(o);
+                		this.astaData.setOffertaMaggiore(o);
                 	}
                 }
             }

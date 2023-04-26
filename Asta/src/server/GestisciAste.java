@@ -1,8 +1,10 @@
 package server;
 
 import java.util.LinkedList;
+
 import classi.*;
 import server.*;
+import server.AstaDataServer;
 import client.*;
 
 import classi.Asta;
@@ -39,8 +41,10 @@ public class GestisciAste extends Thread{
     	while(resources.getIndirizziMulticast().size() > 0) {
     		Asta asta = new Asta(id, prodotti.get(id < 1000 ? id : id%1000), 
     				resources.getIndirizziMulticast().remove(0));
+    		
     		ThreadAstaServer threadAsta = new ThreadAstaServer(new AstaDataServer(asta), resources);
     		threadAsta.start();
+    		
     		resources.addActiveAsta(asta);
     		id++;
     	}

@@ -17,12 +17,12 @@ import classi.Offerta;
  * Classe che gestisce l'input del client e inviare i dati
  */
 public class Input extends Thread {
-	private AstaDataClient astaDataClient;
+	private AstaDataClient datiAsta;
 	private MulticastSocket socket;
 	private InetAddress inetAddress;
 	private int multicastPort;
 	
-	Scanner scanner;
+	Scanner t;
 	
 	/**
 	 * Costruttore della classe
@@ -31,8 +31,8 @@ public class Input extends Thread {
 	 * @param socket Socket su cui mandare i dati
 	 * @param inetAddress Indirizzo su cui mandare i dati
 	 */
-	public Input(AstaDataClient astaDataClient, MulticastSocket socket, InetAddress inetAddress) {
-		this.astaDataClient = astaDataClient;
+	public Input(AstaDataClient datiAsta, MulticastSocket socket, InetAddress inetAddress) {
+		this.datiAsta = datiAsta;
 		this.socket = socket;
 		this.inetAddress = inetAddress;
 		this.multicastPort = 5550;	// Porta su cui mandare l'offerta
@@ -40,20 +40,20 @@ public class Input extends Thread {
 	
 	public void run() {
 		
-		this.scanner = new Scanner(System.in);
+		this.t = new Scanner(System.in);
 		
 		// SMETTO DI CICLARE QUANDO L'ASTA TERMINA
 		while(true) {
-			String input = this.scanner.nextLine();
+			String input = this.t.nextLine();
 			
-			if (!this.astaDataClient.isEnded()) {
+			if (!this.datiAsta.isEnded()) {
 				int offerta = Integer.parseInt(input);
 				Cliente offerente = null;	// ME STESSO
 				
 				// Invio il pacchetto
 				
 				// public Offerta(float offerta, Cliente offerente, Asta asta, Timestamp dataOraOfferta){
-				byte[] datiPacchetto = new Offerta(offerta, offerente, this.astaDataClient.getAsta(), new Timestamp(System.currentTimeMillis())).toString().getBytes();
+				byte[] datiPacchetto = new Offerta(offerta, offerente,new Timestamp(System.currentTimeMillis())).toString().getBytes();
 					// da vedere il timestamp
 				
 				DatagramPacket pacchetto = new DatagramPacket(datiPacchetto, datiPacchetto.length, this.inetAddress, multicastPort);

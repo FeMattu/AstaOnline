@@ -5,25 +5,31 @@ import classi.Cliente;
 import classi.Offerta;
 
 public class AstaDataClient {
-	private Asta asta;
-	private Cliente compratoreUltimaOfferta;
+	private String ip;
+	private float prezzoDiBase;
 	private Offerta ultimaOfferta;
+
+	private Cliente meStesso;
 	
 	private boolean isEnded;
 	
-	public AstaDataClient(Asta asta) {
-		this.asta = asta;
-		this.compratoreUltimaOfferta = null;
+	public AstaDataClient(float prezzoDiBase, String ip) {
+		this.prezzoDiBase = prezzoDiBase;
 		this.ultimaOfferta = null;
 		this.isEnded = false;
+		this.meStesso = null;
 	}
 	
-	public Asta getAsta() {
-        return asta;
-    }
+	public void setMeStesso(Cliente meStesso) {
+		this.meStesso = meStesso;
+	}
 	
-	public Cliente getCliente() {
-		return this.compratoreUltimaOfferta;
+	/**
+	 * Preleva le informazioni riguardo chi sta seguendo l'asta
+	 * @return
+	 */
+	public Cliente getMeStesso() {
+		return meStesso;
 	}
 	
 	public Offerta getOffertaMaggiore() {
@@ -39,6 +45,14 @@ public class AstaDataClient {
         		this.ultimaOfferta = ultimaOfferta;
         }
     }
+	
+	public float getPrezzoDiBase() {
+		return this.prezzoDiBase;
+	}
+	
+	public String getIp() {
+		return ip;
+	}
 	
 	public void endAsta() {
 		this.isEnded = true;

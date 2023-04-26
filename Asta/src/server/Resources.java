@@ -54,7 +54,7 @@ public class Resources {
 		indirizziMulticast = Collections.synchronizedList(new ArrayList<String>());
 		
 		System.out.println("Crezione degli indirizzi IP multicast");
-        for(int i = 0+3; i < 5+3; i++) {
+        for(int i = 0+3; i < 30+3; i++) {
         	String indirizzo = "224.0.0."+i;
         	indirizziMulticast.add(indirizzo);
         }

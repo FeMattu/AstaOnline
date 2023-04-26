@@ -85,7 +85,8 @@ public class ServerTCPThread extends Thread {
 					int idAstaScelta = Integer.parseInt(reader.readLine());
 					if (validazioneAstaScelta(idAstaScelta, aste)) {
 						System.out.println("---\nClient ha accesso all'asta.");
-						writer.writeBytes("Hai effettuato l'accesso all'asta\n");
+						Asta a = getAstaScelta(idAstaScelta, aste);
+                        writer.writeBytes(a.getIp()+":"+a.getProdotto().getPrezzoDiBase()+"\n");
 						
 						//MANDARE LE INFO A ThreadAstaClient.java per la connessione con socket multicast
 						

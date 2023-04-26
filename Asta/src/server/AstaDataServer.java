@@ -40,9 +40,7 @@ public class AstaDataServer {
 	
 	public void setOffertaMaggiore(Offerta ultimaOfferta) {
         synchronized (this.ultimaOfferta) {
-        	
         	// Controllo se l'offerta che mi viene passata è più alta rispetto all'ultima registrata, se si la registro, altrimenti non la registro
-        	
         	if (this.ultimaOfferta.getOfferta() < ultimaOfferta.getOfferta())
         		this.ultimaOfferta = ultimaOfferta;
         }

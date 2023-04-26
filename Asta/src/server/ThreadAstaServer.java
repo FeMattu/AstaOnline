@@ -5,16 +5,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 
 import classi.Asta;
 
@@ -32,6 +22,7 @@ public class ThreadAstaServer extends Thread{
     private Resources resources;
     private Asta asta;
     private float nuovaOfferta, precOfferta;
+    private TimerAsta timer;
     
     /**
      * <b>ThreadAsta constructor</b>
@@ -43,6 +34,7 @@ public class ThreadAstaServer extends Thread{
         this.resources = resources;
         this.nuovaOfferta = 0;
         this.precOfferta = 0;
+        this.timer = new TimerAsta();
     }
     
     /**
@@ -53,7 +45,28 @@ public class ThreadAstaServer extends Thread{
         //settaggio data e ora inizio asta       
         //asta.setDataOra_inizio(Timestamp.valueOf(LocalDateTime.now()));
         
-        
+        byte[] buffer = new byte[1024];
+		MulticastSocket socket;
+		InetAddress group;
+		DatagramPacket packet;
+		timer.start();
+		try {
+			socket = new MulticastSocket(5550);
+			group = InetAddress.getByName("224.0.0.5");
+			socket.joinGroup(group);
+			System.out.println("Aspettando offerte dai compratori...");
+			packet = new DatagramPacket(buffer, buffer.length);
+			System.out.println("---\n---\n---\n***INIZIO ASTA***\n");
+			while(timer.isFinito()) {
+				socket.receive(packet);
+				//System.out.println("Nuova offerta: "+);
+			}
+			socket.leaveGroup(group);
+			socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
         
         
@@ -105,23 +118,6 @@ public class ThreadAstaServer extends Thread{
 		byte[] msg = message.getBytes();
 		DatagramPacket packet = new DatagramPacket(msg, msg.length, group, 5550);
 		socket.send(packet);
-		socket.close();
-	}
-    
-    private static void receiveUDPMessage(String AddressIp, int port) throws IOException {
-		// TODO Auto-generated method stub
-		byte[] buffer = new byte[1024];
-		MulticastSocket socket = new MulticastSocket(5550);
-		InetAddress group = InetAddress.getByName("224.0.0.5");
-		socket.joinGroup(group);
-		System.out.println("Aspettando di connettersi all'asta...");
-		DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-		System.out.println("---\n---\n---\n***INIZIO ASTA***\n");
-		float priceUp;
-		//while (true) {
-		//	
-		//}
-		socket.leaveGroup(group);
 		socket.close();
 	}
     

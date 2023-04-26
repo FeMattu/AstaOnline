@@ -11,6 +11,7 @@ import java.net.MulticastSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
+import classi.Cliente;
 import client.AstaDataClient;
 
 import server.Resources;
@@ -210,7 +211,10 @@ public class Client {
 			// 0 -> ip
 			// 1 -> prezzo di base
 		
-		ConnettoreAsta c = new ConnettoreAsta(new AstaDataClient(Float.parseFloat(dati[1]), dati[0]));
+		AstaDataClient data = new AstaDataClient(Float.parseFloat(dati[1]), dati[0]);
+        data.setMeStesso(new Cliente(Client.username));
+
+        ConnettoreAsta c = new ConnettoreAsta(data);
 		
 		c.start();
 		

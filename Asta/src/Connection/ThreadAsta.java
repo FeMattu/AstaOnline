@@ -62,24 +62,13 @@ public class ThreadAsta extends Thread{
         super.run();
         //settaggio data e ora inizio asta       
         asta.setDataOra_inizio(Timestamp.valueOf(LocalDateTime.now()));
-        //System.out.println(asta);
+        System.out.println(asta);
         
-		try {
-			sendUDPMessage(asta.getProdotto().getNome(), "224.0.0.5", 5550);
-			sendUDPMessage("Prezzo di partenza: "+asta.getProdotto().getPrezzoDiBase(), "224.0.0.5", 5550);
-			countdownUDP();
-			sendUDPMessage("Offerta attuale: "+getPrecOfferta(), "224.0.0.5", 5550);
-			sendUDPMessage("-", "224.0.0.5", 5550);
-			
-			sendUDPMessage("OK", "224.0.0.5", 5550);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-             
-        //per il test predno un client a caso
-        //int i = (int) (Math.random() * 100);     
-        //asta.setVincitore(resources.getClienti().get(i));
+       
+        
+        
+        
+        
         
         
         //fine asta

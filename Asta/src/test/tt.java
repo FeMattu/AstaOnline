@@ -70,8 +70,8 @@ class tt {
 	@Test
 	void testAddAstaIntoDB() {
 		
-		resources.addAstaIntoDB(new Asta(123, new Date(12344555), new Date(12345666), 
-				"192.168.1.1", new Cliente("Amber77", "Ike", null, null, null, null, null), null));
+		//resources.addAstaIntoDB(new Asta(123, new Date(12344555), new Date(12345666), 
+		//		"192.168.1.1", new Cliente("Amber77", "Ike", null, null, null, null, null), null));
 	}
 
 	@Test

@@ -1,21 +1,21 @@
-package client;
+package server;
 
 import classi.Asta;
 import classi.Cliente;
 import classi.Offerta;
 
-public class AstaData {
+public class AstaDataServer {
 	private Asta asta;
-	private Cliente compratoreUltimaOfferta;
 	private Offerta ultimaOfferta;
 	
 	private boolean isEnded;
+	private boolean waiting;
 	
-	public AstaData(Asta asta) {
+	public AstaDataServer(Asta asta) {
 		this.asta = asta;
-		this.compratoreUltimaOfferta = null;
 		this.ultimaOfferta = null;
 		this.isEnded = false;
+		this.waiting = false;
 	}
 	
 	public Asta getAsta() {
@@ -23,11 +23,19 @@ public class AstaData {
     }
 	
 	public Cliente getCliente() {
-		return this.compratoreUltimaOfferta;
+		return this.ultimaOfferta.getOfferente();
 	}
 	
 	public Offerta getOffertaMaggiore() {
         return this.ultimaOfferta;
+    }
+	
+	public void setWaiting(boolean waiting) {
+        this.waiting = waiting;
+    }
+	
+	public boolean isWaiting() {
+        return waiting;
     }
 	
 	public void setOffertaMaggiore(Offerta ultimaOfferta) {

@@ -7,6 +7,7 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 
 import classi.Asta;
+import classi.Offerta;
 
 /**
  * <b>ThreadAsta class</b>
@@ -21,20 +22,17 @@ public class ThreadAstaServer extends Thread{
 
     private Resources resources;
     private Asta asta;
+    private AstaDataServer astaDataServer;
     private float nuovaOfferta, precOfferta;
     private TimerAsta timer;
     
-    /**
-     * <b>ThreadAsta constructor</b>
-     * @param asta -> asta istance
-     * @param r -> resources istance
-     */
-    public ThreadAstaServer(Asta asta, Resources resources){
-        this.asta = asta;
+    // TODO USARE QUESTO COSTRUTTORE QUA INVECE CHE DI QUELLO SOPRA
+    public ThreadAstaServer(AstaDataServer astaDataServer, Resources resources){
+        this.astaDataServer = astaDataServer;
         this.resources = resources;
         this.nuovaOfferta = 0;
         this.precOfferta = 0;
-        this.timer = new TimerAsta();
+        this.timer = new TimerAsta(this.astaDataServer);
     }
     
     /**
@@ -45,28 +43,74 @@ public class ThreadAstaServer extends Thread{
         //settaggio data e ora inizio asta       
         //asta.setDataOra_inizio(Timestamp.valueOf(LocalDateTime.now()));
         
-        byte[] buffer = new byte[1024];
 		MulticastSocket socket;
 		InetAddress group;
 		DatagramPacket packet;
+		timer.start();
 		try {
 			socket = new MulticastSocket(5550);
 			group = InetAddress.getByName("224.0.0.5");
 			socket.joinGroup(group);
 			
-			packet = new DatagramPacket(buffer, buffer.length);
-			System.out.println("---\n---\n---\n***INIZIO ASTA***\n");
-			timer.start();
-			while(timer.isFinito()) {
-				socket.receive(packet);
-				if(timer.isFinito()) {
-					break;
+			System.out.println("Aspettando offerte dai compratori...");
+			
+			// Alla prima offerta inizia l'asta
+			
+			// Finchè l'asta non è finita
+			while (!this.astaDataServer.isEnded()) {
+				// Deve ricevere il pacchetto
+				
+				byte[] pacchetto = new byte[1024];	// SE STONA GUARDARE QUA
+				packet = new DatagramPacket(pacchetto, pacchetto.length);;
+				
+				try {
+					socket.receive(packet);
+					
+					// All'interno viene passato un toString di offerta
+					this.astaDataServer.setWaiting(false);	// Comincio a contare
 				}
-				if(packet != null) {
-					timer.resetTimer();
+				catch (IOException e) {
+	                e.printStackTrace();
+	            }
+				
+				if (this.astaDataServer.isEnded()) {
+					
 				}
+				else {
+					// Non è finita quindi posso analizzare quanto mi è arrivato
+					
+					String input = new String(packet.getData()).substring(0, packet.getLength());
+					Offerta o = new Offerta(input);
+					
+					if (this.astaDataServer.getOffertaMaggiore() != null) {
+						// Devo validare l'offerta, quindi devo vedere che sia stato offerto di più rispetto a prima
+						
+						if (o.getOfferta() > this.astaDataServer.getOffertaMaggiore().getOfferta()) {
+							// L'offerta è valida
+							
+							this.astaDataServer.setOffertaMaggiore(o);
+						}
+						// Se l'offerta non è valida la ignoro
+						
+					}
+					else {
+						this.astaDataServer.setOffertaMaggiore(o);
+					}
+					
+					// Comincio ad aspettare
+					this.astaDataServer.setWaiting(true);
+				}
+				
 			}
 			
+			// L'asta è finita, dichiaro il vincitore
+			
+			
+			byte[] msg = ("Il vincitore è:" + this.astaDataServer.getOffertaMaggiore().getOfferente().getUSERNAME()).getBytes();
+			packet = new DatagramPacket(msg, msg.length, group, 5550);
+			socket.send(packet);
+		
+			// A questo punto posso uscire dal gruppo e chiudere l'asta
 			socket.leaveGroup(group);
 			socket.close();
 		} catch (IOException e) {

@@ -33,6 +33,10 @@ public class Cliente {
 		this.password=password;
 		this.email = email;
 	}
+	
+	public Cliente (String USERNAME) {
+		this.USERNAME = USERNAME;
+	}
 
 	public String getEmail() {
 		return email;

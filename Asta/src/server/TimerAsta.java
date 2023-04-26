@@ -8,7 +8,6 @@ public class TimerAsta extends Thread{
 	public void run() {
 		// TODO Auto-generated method stub
 		super.run();
-		
 		while(true) {
 			if(isContinua()) {
 				resetTimer();

@@ -32,6 +32,8 @@ public class ThreadAsta extends Thread{
 
     private Resources resources;
     private Asta asta;
+    private float nuovaOfferta, precOfferta;
+    private static boolean finito = false;
     
     /**
      * <b>ThreadAsta constructor</b>
@@ -41,6 +43,8 @@ public class ThreadAsta extends Thread{
     public ThreadAsta(Asta asta, Resources resources){
         this.asta = asta;
         this.resources = resources;
+        this.nuovaOfferta = 0;
+        this.precOfferta = 0;
     }
 
     public Asta getAsta() {
@@ -61,14 +65,18 @@ public class ThreadAsta extends Thread{
         //System.out.println(asta);
         
 		try {
-			sendUDPMessage("Ciao ti sei connesso pezzo di merda", "224.0.0.5", 5550);
+			sendUDPMessage(asta.getProdotto().getNome(), "224.0.0.5", 5550);
+			sendUDPMessage("Prezzo di partenza: "+asta.getProdotto().getPrezzoDiBase(), "224.0.0.5", 5550);
+			countdownUDP();
+			sendUDPMessage("Offerta attuale: "+getPrecOfferta(), "224.0.0.5", 5550);
+			sendUDPMessage("-", "224.0.0.5", 5550);
+			
 			sendUDPMessage("OK", "224.0.0.5", 5550);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
              
-        
         //per il test predno un client a caso
         //int i = (int) (Math.random() * 100);     
         //asta.setVincitore(resources.getClienti().get(i));
@@ -81,13 +89,51 @@ public class ThreadAsta extends Thread{
         //resources.addAstaIntoDB(asta);
     }
     
-    public void sendUDPMessage(String message, String ipAddress, int port) throws IOException {
+    private boolean isOffertaChanged() {
+    	if(getPrecOfferta()!=getNuovaOfferta()) {
+    		return true;
+    	}
+		return false;
+	}
+    
+    private float getPrecOfferta() {
+		return precOfferta;
+	}
+    
+    private void setPrecOfferta(float precOfferta) {
+		this.precOfferta = precOfferta;
+	}
+    
+    private float getNuovaOfferta() {
+		return nuovaOfferta;
+	}
+    
+    private void setNuovaOfferta(float nuovaOfferta) {
+		this.nuovaOfferta = nuovaOfferta;
+	}
+    
+    private static void sendUDPMessage(String message, String ipAddress, int port) throws IOException {
     	DatagramSocket socket = new DatagramSocket();
 		InetAddress group = InetAddress.getByName("224.0.0.5");
 		byte[] msg = message.getBytes();
 		DatagramPacket packet = new DatagramPacket(msg, msg.length, group, 5550);
 		socket.send(packet);
 		socket.close();
+	}
+    
+    private static void countdownUDP() {
+		for(int i=30;i>0;i--) {
+			try {
+				System.out.println(i+" secondi rimasti.");
+				if(i==0) {
+					finito = true;
+				}
+				Thread.sleep(1000);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
     
 }

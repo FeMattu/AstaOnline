@@ -68,7 +68,7 @@ public class Client {
 				case 1:
 					// Scegliendo questa, passiamo alla scelta dell'asta alla quale prendere parte
 					partecipaAdUnAsta();
-					System.out.println("---\n"+reader.readLine());
+					System.out.println("---\n" + reader.readLine());
 					break;
 				case 2:
 					// Scegliendo questa, inseriamo un prodotto che verrà messo all'asta
@@ -92,27 +92,6 @@ public class Client {
 		} while (sceltaMenu == 2);
 
 		scanner.close();
-	}
-
-	private static void receiveUDPMessage(String AddressIp, int port) throws IOException {
-		// TODO Auto-generated method stub
-		byte[] buffer = new byte[1024];
-		MulticastSocket socket = new MulticastSocket(5550);
-		InetAddress group = InetAddress.getByName("224.0.0.5");
-		socket.joinGroup(group);
-		while (true) {
-			System.out.println("Waiting for multicast message...");
-			DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-			socket.receive(packet);
-			String msg = new String(packet.getData(), packet.getOffset(), packet.getLength());
-			System.out.println("[Multicast UDP message received] >> " + msg);
-			if ("OK".equals(msg)) {
-				System.out.println("No more message. Exiting : " + msg);
-				break;
-			}
-		}
-		socket.leaveGroup(group);
-		socket.close();
 	}
 
 	/**
@@ -244,5 +223,33 @@ public class Client {
 		writer.writeBytes(nome + ":" + desc + ":" + categoria + ":" + prezDiBase + "\n");
 		System.out.println(reader.readLine());
 	}
-	
+
+	private static void receiveUDPMessage(String AddressIp, int port) throws IOException {
+		// TODO Auto-generated method stub
+		byte[] buffer = new byte[1024];
+		MulticastSocket socket = new MulticastSocket(5550);
+		InetAddress group = InetAddress.getByName("224.0.0.5");
+		socket.joinGroup(group);
+		System.out.println("Aspettando di connettersi all'asta...");
+		DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+		System.out.println("---\n---\n---\n***INIZIO ASTA***\n");
+		float priceUp;
+		while (true) {
+			socket.receive(packet);
+			String msg = new String(packet.getData(), packet.getOffset(), packet.getLength());
+			if (!"OK".equals(msg)) {
+				if(msg.equals("-")) {
+					System.out.println("Di quanto vuoi incrementare l'offerta?: ");
+					priceUp = scanner.nextFloat();
+				}else {
+					System.out.println(msg);
+				}
+			} else {
+				break;
+			}
+		}
+		socket.leaveGroup(group);
+		socket.close();
+	}
+
 }

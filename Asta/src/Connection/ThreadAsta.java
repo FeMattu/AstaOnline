@@ -27,7 +27,7 @@ import gambit.Resources;
  * 			  Lorenzo Rapposelli<br>
  * 			  Giacomo Diridoni</i>
  *
- */
+ */ 
 public class ThreadAsta extends Thread{
 
     private Resources resources;

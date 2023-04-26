@@ -16,7 +16,7 @@ import gambit.Resources;
  * 			  Lorenzo Rapposelli<br>
  * 			  Giacomo Diridoni</i>
  *
- */
+ */ 
 public class Server {
 	public static void main(String[] args) {
 		Resources resources = null;

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.MulticastSocket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.sql.Date;
@@ -31,7 +32,6 @@ public class ThreadAstaServer extends Thread{
     private Resources resources;
     private Asta asta;
     private float nuovaOfferta, precOfferta;
-    private static boolean finito = false;
     
     /**
      * <b>ThreadAsta constructor</b>
@@ -44,14 +44,6 @@ public class ThreadAstaServer extends Thread{
         this.nuovaOfferta = 0;
         this.precOfferta = 0;
     }
-
-    public Asta getAsta() {
-		return asta;
-	}
-    
-    public Resources getResources() {
-		return resources;
-	}
     
     /**
      * <b>Run method for ThreadAsta class</b>
@@ -59,8 +51,8 @@ public class ThreadAstaServer extends Thread{
     public void run(){
         super.run();
         //settaggio data e ora inizio asta       
-        asta.setDataOra_inizio(Timestamp.valueOf(LocalDateTime.now()));
-        //System.out.println(asta);
+        //asta.setDataOra_inizio(Timestamp.valueOf(LocalDateTime.now()));
+        
         
         
         
@@ -83,16 +75,24 @@ public class ThreadAstaServer extends Thread{
 		return false;
 	}
     
+    public Asta getAsta() {
+		return asta;
+	}
+    
+    public Resources getResources() {
+		return resources;
+	}
+    
     private float getPrecOfferta() {
 		return precOfferta;
 	}
     
-    private void setPrecOfferta(float precOfferta) {
-		this.precOfferta = precOfferta;
-	}
-    
     private float getNuovaOfferta() {
 		return nuovaOfferta;
+	}
+    
+    private void setPrecOfferta(float precOfferta) {
+		this.precOfferta = precOfferta;
 	}
     
     private void setNuovaOfferta(float nuovaOfferta) {
@@ -108,19 +108,21 @@ public class ThreadAstaServer extends Thread{
 		socket.close();
 	}
     
-    private static void countdownUDP() {
-		for(int i=30;i>0;i--) {
-			try {
-				System.out.println(i+" secondi rimasti.");
-				if(i==0) {
-					finito = true;
-				}
-				Thread.sleep(1000);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+    private static void receiveUDPMessage(String AddressIp, int port) throws IOException {
+		// TODO Auto-generated method stub
+		byte[] buffer = new byte[1024];
+		MulticastSocket socket = new MulticastSocket(5550);
+		InetAddress group = InetAddress.getByName("224.0.0.5");
+		socket.joinGroup(group);
+		System.out.println("Aspettando di connettersi all'asta...");
+		DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+		System.out.println("---\n---\n---\n***INIZIO ASTA***\n");
+		float priceUp;
+		//while (true) {
+		//	
+		//}
+		socket.leaveGroup(group);
+		socket.close();
 	}
     
 }

@@ -2,7 +2,7 @@ package server;
 
 public class TimerAsta extends Thread{
 	
-	private int i = 20;
+	private static int i = 20;
 	private static boolean continua = false, finito = false;
 	
 	public void run() {
@@ -16,6 +16,12 @@ public class TimerAsta extends Thread{
 			if(i>0) {
 				System.out.println("Mancano "+i+" secondi.");
 				i--;
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}else {
 				finito = true;
 				break;
@@ -43,7 +49,7 @@ public class TimerAsta extends Thread{
 		TimerAsta.finito = finito;
 	}
 	
-	private void resetTimer() {
+	public static void resetTimer() {
 		i = 20;
 	}
 	

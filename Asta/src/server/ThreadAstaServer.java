@@ -49,18 +49,24 @@ public class ThreadAstaServer extends Thread{
 		MulticastSocket socket;
 		InetAddress group;
 		DatagramPacket packet;
-		timer.start();
 		try {
 			socket = new MulticastSocket(5550);
 			group = InetAddress.getByName("224.0.0.5");
 			socket.joinGroup(group);
-			System.out.println("Aspettando offerte dai compratori...");
+			
 			packet = new DatagramPacket(buffer, buffer.length);
 			System.out.println("---\n---\n---\n***INIZIO ASTA***\n");
+			timer.start();
 			while(timer.isFinito()) {
 				socket.receive(packet);
-				//System.out.println("Nuova offerta: "+);
+				if(timer.isFinito()) {
+					break;
+				}
+				if(packet != null) {
+					timer.resetTimer();
+				}
 			}
+			
 			socket.leaveGroup(group);
 			socket.close();
 		} catch (IOException e) {

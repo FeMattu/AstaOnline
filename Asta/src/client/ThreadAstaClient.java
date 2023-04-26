@@ -12,24 +12,31 @@ public class ThreadAstaClient extends Thread{
 	}
 	
 	public void run() {
-		// TODO Auto-generated method stub
+		try {
+			receiveUDPMessage("224.0.0.5", 5550);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
 		super.run();
-		
 	}
 	
+	@SuppressWarnings("deprecation")
 	private static void receiveUDPMessage(String AddressIp, int port) throws IOException {
-		// TODO Auto-generated method stub
 		byte[] buffer = new byte[1024];
 		MulticastSocket socket = new MulticastSocket(5550);
 		InetAddress group = InetAddress.getByName("224.0.0.5");
 		socket.joinGroup(group);
-		System.out.println("Aspettando di connettersi all'asta...");
-		DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-		System.out.println("---\n---\n---\n***INIZIO ASTA***\n");
-		float priceUp;
-		//while (true) {
-		//	
-		//}
+		while (true) {
+			System.out.println("Aspettando di ricevere le informazioni...");
+			DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+			socket.receive(packet);
+			String msg = new String(packet.getData(), packet.getOffset(), packet.getLength());
+			System.out.println("---\n---\n---\n***ECCO LE INFORMAZIONI:***\n");
+			if ("OK".equals(msg)) {
+				System.out.println("No more message. Exiting : " + msg);
+				break;
+			}
+		}
 		socket.leaveGroup(group);
 		socket.close();
 	}

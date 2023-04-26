@@ -1,4 +1,4 @@
-package Connection;
+package client;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -10,7 +10,7 @@ import java.net.MulticastSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
-import gambit.Resources;
+import server.Resources;
 
 /**
  * <b>Client class</b>

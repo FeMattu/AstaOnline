@@ -1,4 +1,4 @@
-package gambit;
+package server;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,9 +7,15 @@ import java.util.List;
 
 import javax.naming.directory.InvalidAttributesException;
 
+import client.Cliente;
+
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+
+import classi.*;
+import server.*;
+import client.*;
 
 /**
  * Classe thread-safe in cui vengono gestite tutte le risorse del server, inoltre si interfaccia con il DBMS.

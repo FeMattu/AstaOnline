@@ -1,4 +1,4 @@
-package gambit;
+package client;
 
 import java.sql.Date;
 import java.time.LocalDate;

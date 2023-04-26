@@ -1,7 +1,11 @@
-package gambit;
+package server;
 
 import java.util.LinkedList;
-import Connection.ThreadAsta;
+import classi.*;
+import server.*;
+import client.*;
+
+import classi.Asta;
 
 
 /**

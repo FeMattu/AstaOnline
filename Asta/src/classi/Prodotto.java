@@ -1,9 +1,11 @@
-package gambit;
+package classi;
 
 import java.sql.Date;
 import java.sql.Timestamp;
 
 import javax.naming.directory.InvalidAttributesException;
+
+import client.Cliente;
 
 public class Prodotto {
 

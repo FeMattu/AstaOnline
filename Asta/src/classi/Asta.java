@@ -1,7 +1,9 @@
-package gambit;
+package classi;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+
+import client.Cliente;
 
 public class Asta {
 

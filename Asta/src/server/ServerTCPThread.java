@@ -1,4 +1,4 @@
-package Connection;
+package server;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -11,10 +11,9 @@ import java.time.LocalDateTime;
 import java.sql.Date;
 import java.util.List;
 
-import gambit.Asta;
-import gambit.Cliente;
-import gambit.Prodotto;
-import gambit.Resources;
+import classi.Asta;
+import classi.Prodotto;
+import client.Cliente;
 
 /**
  * <b>ServerTCPThread class</b>

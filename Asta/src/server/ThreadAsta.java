@@ -1,4 +1,4 @@
-package Connection;
+package server;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -15,9 +15,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 
-import gambit.Asta;
-import gambit.GestisciAste;
-import gambit.Resources;
+import classi.Asta;
 
 /**
  * <b>ThreadAsta class</b>

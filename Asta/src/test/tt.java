@@ -11,9 +11,9 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import gambit.Asta;
-import gambit.Cliente;
-import gambit.Resources;
+import classi.Asta;
+import client.Cliente;
+import server.Resources;
 
 class tt {
 

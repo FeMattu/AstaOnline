@@ -5,19 +5,13 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
-import java.net.MulticastSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
 import classi.Cliente;
-import client.AstaDataClient;
-
-import server.Resources;
 
 /**
- * <b>Client class</b>
+ * <b>Classe Client</b>
  * 
  * @author <i>Federico Mattucci<br>
  *         Tommaso Giannecchini<br>
@@ -35,6 +29,10 @@ public class Client {
 	private static String username;
 	private static String password; 
 
+	/**
+	 * Metodo main della classe Client
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		try {
 			socket = new Socket("localhost", 5234);
@@ -99,10 +97,8 @@ public class Client {
 	}
 
 	/**
-	 * permette al client di accedere o registrarsi alla "piattaforma"
-	 * 
-	 * @return <strong>true</strong> se l'accesso è stato effettuato,
-	 *         <strong>false</strong> altrimenti
+	 * Metodo per validare accesso al server
+	 * @return true se esegui accesso, false altrimenti
 	 */
 	private static boolean accessoServer() {
 		int scelta = -1;
@@ -175,6 +171,9 @@ public class Client {
 		}
 	}
 
+	/**
+	 * Stampa del menu per la scelta di cosa fare
+	 */
 	private static void menu() {
 		System.out.println("Menù:");
 		System.out.println("1 -> Partecipa ad un'asta");
@@ -183,12 +182,20 @@ public class Client {
 		System.out.print("Scelta: ");
 	}
 
+	/**
+	 * Metodo per la presa in input della scelta nel menù
+	 * @return numero intero rappresentante la scelta fatta
+	 */
 	private static int sceltaMenu() {
 		menu();
 		int s = scanner.nextInt();
 		return s;
 	}
-
+	
+	/**
+	 * Metodo per partecipare ad un'asta -> valori passati a ServerTCPThread
+	 * @throws IOException -> Eccezioni lanciate
+	 */
 	private static void partecipaAdUnAsta() throws IOException {
 		System.out.println("---\nElenco aste a cui puoi partecipare:");
 		String asta = reader.readLine();
@@ -203,7 +210,7 @@ public class Client {
 		writer.writeBytes(idAstaScelta + "\n");
 		
 		
-		// Ri prendo il pacchetto
+		// Riprendo il pacchetto
 		
 		String ip = reader.readLine();
 		
@@ -228,6 +235,10 @@ public class Client {
 		//receiveUDPMessage("224.0.0.5", 5550);
 	}
 
+	/**
+	 * Metodo per aggiungere un prodotto al DB -> passaggio dei parametri a ServerTCPThread
+	 * @throws IOException -> Eccezioni lanciate
+	 */
 	private static void aggiuntaProdotto() throws IOException {
 		String nome, desc, categoria;
 		float prezDiBase;

@@ -10,7 +10,7 @@ import classi.Asta;
 import classi.Offerta;
 
 /**
- * <b>ThreadAsta class</b>
+ * <b>Classe ThreadAstaServer</b>
  * @author <i>Federico Mattucci<br>
  * 			  Tommaso Giannecchini<br>
  * 			  Federico Massanti<br>
@@ -23,26 +23,23 @@ public class ThreadAstaServer extends Thread{
     private Resources resources;
     private Asta asta;
     private AstaDataServer astaData;
-    private float nuovaOfferta, precOfferta;
     private TimerAsta timer;
     
     /**
-     * <b>ThreadAsta constructor</b>
-     * @param asta -> asta istance
-     * @param r -> resources istance
+     * Costruttore ThreadAstaServer
+     * @param asta -> asta della quale viene creato il thread
+     * @param resources -> risorse alle quali si connette
      */
     
     // TODO USARE QUESTO COSTRUTTORE QUA INVECE CHE DI QUELLO SOPRA
-    public ThreadAstaServer(AstaDataServer asta, Resources resources){
-        this.astaData = asta;
+    public ThreadAstaServer(AstaDataServer astaDataServer, Resources resources){
+        this.astaData = astaDataServer;
         this.resources = resources;
-        this.nuovaOfferta = 0;
-        this.precOfferta = 0;
         this.timer = new TimerAsta(this.astaData);
     }
     
     /**
-     * <b>Run method for ThreadAsta class</b>
+     * Metodo run della classe ThreadAstaServer
      */
     public void run(){
         super.run();
@@ -67,52 +64,46 @@ public class ThreadAstaServer extends Thread{
 				// Deve ricevere il pacchetto
 				
 				byte[] pacchetto = new byte[1024];	// SE STONA GUARDARE QUA
-				packet = new DatagramPacket(pacchetto, pacchetto.length);;
+				packet = new DatagramPacket(pacchetto, pacchetto.length);
 				
 				try {
 					socket.receive(packet);
 					
 					// All'interno viene passato un toString di offerta
-					this.astaData.setWaiting(false);	// Comincio a contare
+					
 				}
 				catch (IOException e) {
 	                e.printStackTrace();
 	            }
 				
 				if (this.astaData.isEnded()) {
-					
+					break;
 				}
 				else {
-					// Non è finita quindi posso analizzare quanto mi è arrivato
-					
+                    // Non è finita quindi posso analizzare quanto mi è arrivato
+
+					resources.addAstaIntoDB(this.astaData.getAsta());
+					System.out.println("Asta terminata e aggiunta nel db.");
 					String input = new String(packet.getData()).substring(0, packet.getLength());
-					Offerta o = new Offerta(input);
-					
-					if (this.astaData.getOffertaMaggiore() != null) {
-						// Devo validare l'offerta, quindi devo vedere che sia stato offerto di più rispetto a prima
-						
-						if (o.getOfferta() > this.astaData.getOffertaMaggiore().getOfferta()) {
-							// L'offerta è valida
-							
-							this.astaData.setOffertaMaggiore(o);
-						}
-						// Se l'offerta non è valida la ignoro
-						
-					}
-					else {
-						this.astaData.setOffertaMaggiore(o);
-					}
-					
-					// Comincio ad aspettare
-					this.astaData.setWaiting(true);
-				}
+                    Offerta o = new Offerta(input);
+
+                    if (o.getOfferta() > this.astaData.getOffertaMaggiore().getOfferta()) {
+                        // L'offerta è valida
+
+                        this.astaData.setOffertaMaggiore(o);
+                    }
+
+                    // Comincio ad aspettare
+                    /*this.astaData.setWaiting(true);
+                    System.out.println("Waiting:" +this.astaData.isWaiting());*/
+                }
 				
 			}
 			
 			// L'asta è finita, dichiaro il vincitore
 			
 			
-			byte[] msg = ("Il vincitore è:" + this.astaData.getOffertaMaggiore().getOfferente().getUSERNAME()).getBytes();
+			byte[] msg = ("Il vincitore è:" + this.astaData.getCliente().getUSERNAME()).getBytes();
 			packet = new DatagramPacket(msg, msg.length, group, 5550);
 			socket.send(packet);
 		
@@ -125,11 +116,6 @@ public class ThreadAstaServer extends Thread{
 		}
         
         
-        
-        
-        
-        
-        
         //fine asta
         //aggiunta data e ora finea asta
         //asta.setDataOra_fine(Timestamp.valueOf(LocalDateTime.now()));
@@ -137,12 +123,7 @@ public class ThreadAstaServer extends Thread{
         //resources.addAstaIntoDB(asta);
     }
     
-    private boolean isOffertaChanged() {
-    	if(getPrecOfferta()!=getNuovaOfferta()) {
-    		return true;
-    	}
-		return false;
-	}
+    /*GETTERS AND SETTERS*/
     
     public Asta getAsta() {
 		return asta;
@@ -152,22 +133,13 @@ public class ThreadAstaServer extends Thread{
 		return resources;
 	}
     
-    private float getPrecOfferta() {
-		return precOfferta;
-	}
-    
-    private float getNuovaOfferta() {
-		return nuovaOfferta;
-	}
-    
-    private void setPrecOfferta(float precOfferta) {
-		this.precOfferta = precOfferta;
-	}
-    
-    private void setNuovaOfferta(float nuovaOfferta) {
-		this.nuovaOfferta = nuovaOfferta;
-	}
-    
+    /**
+     * Metodo per mandare messaggi UDP
+     * @param message -> messaggio da mandare
+     * @param ipAddress -> IP al quale mandarlo in Multicast
+     * @param port -> Porta sulla quale connettersi
+     * @throws IOException -> Eccezioni lanciate
+     */
     private static void sendUDPMessage(String message, String ipAddress, int port) throws IOException {
     	DatagramSocket socket = new DatagramSocket();
 		InetAddress group = InetAddress.getByName("224.0.0.5");

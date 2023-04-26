@@ -4,8 +4,15 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.naming.directory.InvalidAttributesException;
-
+/**
+ * <b>Classe Offerta</b>
+ * @author <i>Federico Mattucci<br>
+ * 			  Tommaso Giannecchini<br>
+ * 			  Federico Massanti<br>
+ * 			  Lorenzo Rapposelli<br>
+ * 			  Giacomo Diridoni</i>
+ *
+ */ 
 public class Offerta {
 	private int id_offerta;
 	private Timestamp DataOraOfferta;
@@ -13,6 +20,14 @@ public class Offerta {
 	private Cliente offerente;
 	private Asta asta;
 		
+	/**
+	 * Primo costruttore classe Offerta
+	 * @param id_offerta -> ID dell'offerta
+	 * @param dataOraOfferta -> Data/Ora dell'offerta
+	 * @param offerta -> valore dell'offerta
+	 * @param offerente -> istanza classe Cliente che identifica chi ha fatto l'offerta
+	 * @param asta -> asta alla quale è stata fatta l'offerta
+	 */
 	public Offerta(int id_offerta, Timestamp dataOraOfferta, float offerta, Cliente offerente, Asta asta) {
 		super();
 		this.id_offerta = id_offerta;
@@ -23,12 +38,12 @@ public class Offerta {
 	}
 	
 	/**
-     * Costruttore di offerta per inviare i dati
+     * Secondo costruttore della classe Offerta
      * 
-     * @param offerta Valore dell'offerta
-     * @param offerente Chi ha fatto l'offerta che verrà inviata
-     * @param asta Asta di riferimento
-     * @param dataOraOfferta Momento in cui è stata fatta l'offerta
+     * @param offerta -> Valore dell'offerta
+     * @param offerente -> Chi ha fatto l'offerta che verrà inviata
+     * @param asta -> Asta di riferimento
+     * @param dataOraOfferta -> Momento in cui è stata fatta l'offerta
      * 
      * Mando meno parametri in quanto ogni client è predisposto per gestire una sola asta per volta, pertanto, non risulta necessario inviare dati relativi all'asta per cui è riferita l'offerta
      */
@@ -40,6 +55,10 @@ public class Offerta {
         this.offerente = offerente;
     }
 	
+    /**
+     * Terzo costruttore della classe Offerta
+     * @param toString -> Stringa con la quale vengono passati tutti i parametri per la creazione di un'istanza di classe Offerta durante l'esecuzione del codice
+     */
 	public Offerta(String toString) {
 		/*
 		 	"id_offerta:"+id_offerta+",Data e ora Offerta:"+DataOraOfferta+",Offerta:"+offerta
@@ -91,6 +110,8 @@ public class Offerta {
 		}
 	}
 
+	/*GETTERS AND SETTERS*/
+	
 	public int getId_offerta() {
 		return id_offerta;
 	}
@@ -116,24 +137,14 @@ public class Offerta {
 		return "id_offerta:"+id_offerta+",Data e ora Offerta:"+DataOraOfferta+",Offerta:"+offerta
 				+",offerente:"+offerente.getUSERNAME()+",Asta:"+asta.getId_asta();
 	}
-
-	public static void main(String[] args) {
-		// public Offerta(int id_offerta, Timestamp dataOraOfferta, float offerta, Cliente offerente, Asta asta) {
-		// public Cliente(String USERNAME, String nome, String cognome, Date data_nascita, String residenza,
-				// String password, String email) {
-		// public Asta(int id_asta, Prodotto prodotto, String ip) {
-		// public Prodotto(int ID_PRODOTTO, String nome, String descrizione, float prezzoDiBase, boolean venduto,
-        // Cliente venditore, Timestamp dataOra_aggiunta, String categoria)
-		try {
-			Offerta o = new Offerta(-1, new Timestamp(System.currentTimeMillis()), 1000, new Cliente("username", "", "", null, "", "", ""), new Asta(-1, new Prodotto(-1, "PRODOTTO", "", 10000, false, null, null, ""), ""));
-			
-			Offerta p = new Offerta(o.toString());
-			
-			System.out.println(p.toString());
-			
-		} catch (InvalidAttributesException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	
+	/**
+	 * Secondo metodo usato come toString durante l'esecuzione del codice
+	 * @return
+	 */
+	public String datiDaInviare() {
+        return "id_offerta:"+id_offerta+",Data e ora Offerta:"+DataOraOfferta+",Offerta:"+offerta
+                +",offerente:"+offerente.getUSERNAME();
+    }
+	
 }

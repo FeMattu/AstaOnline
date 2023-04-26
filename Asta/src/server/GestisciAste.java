@@ -3,34 +3,33 @@ package server;
 import java.util.LinkedList;
 
 import classi.*;
-import server.*;
-import server.AstaDataServer;
-import client.*;
-
-import classi.Asta;
-
 
 /**
- * Classe thread che decide ed avvia le aste, questo non controlla le aste,
- * ma decide solamente il prodotto da mettere all'asta ed crea l'asta apposita con i vari parametri
- * inserendola poi nelle {@link Resources}
- * @param resources classe monitor di tutte le risorse e gestore della connessione con il database.
- */
+ * <b>Classe GestisciAste</b>
+ * @author <i>Federico Mattucci<br>
+ * 			  Tommaso Giannecchini<br>
+ * 			  Federico Massanti<br>
+ * 			  Lorenzo Rapposelli<br>
+ * 			  Giacomo Diridoni</i>
+ *
+ */ 
 public class GestisciAste extends Thread{
 	
     private Resources resources;
     private int id;
     
     /**
-     * Crea un thread che decide il prodotto e lo mette all'asta.
-     * @param resources classe monitor di tutte le risorse e gestore della connessione con il database.
+     * Costruttore classe GestisciAste
+     * @param resources -> risorse passate come parametro
      */
     public GestisciAste(Resources resources) {
         this.resources=resources;
         this.id = resources.getIdUltimaAsta()+1;
     }
     
-    
+    /**
+     * Metodo run della classe GestisciAste
+     */
     @Override
     public void run() {
     	super.run();
@@ -43,12 +42,12 @@ public class GestisciAste extends Thread{
     				resources.getIndirizziMulticast().remove(0));
     		
     		ThreadAstaServer threadAsta = new ThreadAstaServer(new AstaDataServer(asta), resources);
+    		//resources.addToThreadAstaServer(threadAsta);
     		threadAsta.start();
     		
     		resources.addActiveAsta(asta);
     		id++;
     	}
-    	
     	if(resources.getCurrentGambits().size() == 5)
     		System.out.println("Creazione aste avventua con successo");
     	

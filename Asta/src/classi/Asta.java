@@ -1,8 +1,16 @@
 package classi;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
+/**
+ * <b>Classe Asta</b>
+ * @author <i>Federico Mattucci<br>
+ * 			  Tommaso Giannecchini<br>
+ * 			  Federico Massanti<br>
+ * 			  Lorenzo Rapposelli<br>
+ * 			  Giacomo Diridoni</i>
+ *
+ */ 
 public class Asta {
 
 	private int id_asta;
@@ -14,6 +22,12 @@ public class Asta {
 	
 	private float prezzoCorrente;
 	
+	/**
+	 * Primo costruttore classe Asta
+	 * @param id_asta -> ID dell'asta
+	 * @param prodotto -> Prodotto venduto nell'asta
+	 * @param ip -> IP Multicast dell'asta
+	 */
 	public Asta(int id_asta, Prodotto prodotto, String ip) {
 		super();
 		this.id_asta = id_asta;
@@ -22,6 +36,15 @@ public class Asta {
 		this.ip = ip;
 	}
 	
+	/**
+	 * Secondo costruttore classe Asta
+	 * @param id_asta -> ID dell'asta
+	 * @param dataOra_inizio -> Data/Ora inizio dell'asta
+	 * @param dataOra_fine -> Data/Ora fine dell'asta
+	 * @param ip -> IP Multicast dell'asta
+	 * @param vincitore -> Vincitore dell'asta
+	 * @param prodotto -> Prodotto venduto nell'asta
+	 */
 	public Asta(int id_asta, Timestamp dataOra_inizio, Timestamp dataOra_fine, String ip, Cliente vincitore,
 			Prodotto prodotto) {
 		super();
@@ -34,6 +57,8 @@ public class Asta {
 		this.prezzoCorrente=prodotto.getPrezzoDiBase();
 	}
 
+	/*GETTERS AND SETTERS*/
+	
 	public int getId_asta() {
 		return id_asta;
 	}

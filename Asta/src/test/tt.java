@@ -4,17 +4,20 @@ import static org.junit.Assert.fail;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import classi.Asta;
 import classi.Cliente;
 import server.Resources;
 
+/**
+ * <b>Classe Test</b>
+ * @author <i>Federico Mattucci</i>
+ *
+ */ 
 class tt {
 
 	private static Resources resources =null;

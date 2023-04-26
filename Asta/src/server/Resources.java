@@ -8,16 +8,18 @@ import java.util.List;
 import javax.naming.directory.InvalidAttributesException;
 
 import java.sql.*;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 
 import classi.*;
-import server.*;
-import client.*;
 
 /**
- * Classe thread-safe in cui vengono gestite tutte le risorse del server, inoltre si interfaccia con il DBMS.
- */
+ * <b>Classe Resources</b>
+ * @author <i>Federico Mattucci<br>
+ * 			  Tommaso Giannecchini<br>
+ * 			  Federico Massanti<br>
+ * 			  Lorenzo Rapposelli<br>
+ * 			  Giacomo Diridoni</i>
+ *
+ */ 
 public class Resources {
     //variabili Connessione al database
     private Connection con;
@@ -27,15 +29,15 @@ public class Resources {
 	//liste thread-safe
 	private List<Asta> aste;
 	private List<String> indirizziMulticast;
+	//private List<ThreadAstaServer> threadAstaServerList;
 
 	/**
-	 * Costruisce un monitor delle risorse, e funziona da classe CRUD per il database, 
-	 * instaurando la connessione con il database dato;
+	 * Costruttore classe Resources
 	 * <strong>ATTENZIONE.</strong> i driver caricati per il database sono i driver per MySQL
-	 * @param databaseURL URL del database a cui connettersi
-	 * @param database Databse da utilizzare
-	 * @param user UserName del database
-	 * @param psw Password del databse
+	 * @param databaseURL -> URL del database a cui connettersi
+	 * @param database -> Databse da utilizzare
+	 * @param user -> UserName del database
+	 * @param psw -> Password del databse
 	 */
 	public Resources(String databaseURL, String database, String user, String psw) {	
 		this.databaseURL = databaseURL;
@@ -52,6 +54,7 @@ public class Resources {
 		
 		aste = Collections.synchronizedList(new LinkedList<Asta>());
 		indirizziMulticast = Collections.synchronizedList(new ArrayList<String>());
+		//threadAstaServerList = Collections.synchronizedList(new LinkedList<ThreadAstaServer>());
 		
 		System.out.println("Crezione degli indirizzi IP multicast");
         for(int i = 0+3; i < 5+3; i++) {
@@ -60,6 +63,8 @@ public class Resources {
         }
         System.out.println("Indirizzi creati: "+indirizziMulticast.size());	
 	}
+	
+	/*GETTERS AND SETTERS*/
 	
 	//DATI DATABASE
 	/**

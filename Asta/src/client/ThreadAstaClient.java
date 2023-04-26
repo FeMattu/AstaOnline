@@ -6,21 +6,35 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 
 import classi.Offerta;
-import classi.Cliente;
 
+/**
+ * <b>Classe ThreadAstaClient</b>
+ * @author <i>Federico Mattucci<br>
+ * 			  Tommaso Giannecchini<br>
+ * 			  Federico Massanti<br>
+ * 			  Lorenzo Rapposelli<br>
+ * 			  Giacomo Diridoni</i>
+ *
+ */ 
 public class ThreadAstaClient extends Thread{
 
 	AstaDataClient astaData;
 	
+	/**
+	 * Costruttore della classe ThreadAstaClient
+	 * @param astaData -> istanza di classe AstaDataClient passata come parametro
+	 */
     ThreadAstaClient(AstaDataClient astaData) {
         // TODO Auto-generated constructor stub
     	this.astaData = astaData;
     }
 
-    public void run() {
+    /**
+     * Metodo run della classe ThreadAstaClient
+     */
+	public void run() {
         try {
-            String AddressIp = "224.0.0.5";
-            int port = 5550;
+        	System.out.println("Sono in ThreadAstaClient.");
             
             byte[] buffer = new byte[1024];
             MulticastSocket socket = new MulticastSocket(5550);
@@ -29,6 +43,7 @@ public class ThreadAstaClient extends Thread{
             
             // Itero finchè l'asta non è finita
             while (!this.astaData.isEnded()) {
+            	System.out.println("Inserire un'offerta che sia maggiore di: " + this.astaData.getOffertaMaggiore().getOfferta() + " : ");
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
                 socket.receive(packet);
                 String msg = new String(packet.getData(), packet.getOffset(), packet.getLength());

@@ -3,8 +3,16 @@ package client;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
-import client.AstaDataClient;
 
+/**
+ * <b>Classe ConnettoreAsta</b>
+ * @author <i>Federico Mattucci<br>
+ * 			  Tommaso Giannecchini<br>
+ * 			  Federico Massanti<br>
+ * 			  Lorenzo Rapposelli<br>
+ * 			  Giacomo Diridoni</i>
+ *
+ */ 
 public class ConnettoreAsta extends Thread{
 	
 	private InetAddress inetAddress;
@@ -13,10 +21,11 @@ public class ConnettoreAsta extends Thread{
 	
     // DALL'ID CI ARRIVO ALL'IP
     
+    /**
+     * Costruttore classe ConnettoreAsta
+     * @param dati -> dati passati come parametro
+     */
 	public ConnettoreAsta(AstaDataClient dati) {
-		
-		// MANCA CONFIGURARE I DATI IN MODO DA COLLEGARSI A QUEST'ASTA BENEDETTA
-		
 		this.dati = dati;
 		
 		try {
@@ -28,8 +37,12 @@ public class ConnettoreAsta extends Thread{
 		}
 	}
 	
+	/**
+	 * Metodo run della classe ConnettoreAsta
+	 */
 	public void run() {
 		// data sono i dati dell'asta
+		System.out.println("Sono nel connettore.");
 		Input input = new Input(this.dati, multicastSocket, inetAddress);
 		ThreadAstaClient client = new ThreadAstaClient(this.dati);
 		

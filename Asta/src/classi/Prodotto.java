@@ -1,10 +1,18 @@
 package classi;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 import javax.naming.directory.InvalidAttributesException;
 
+/**
+ * <b>Classe Prodotto</b>
+ * @author <i>Federico Mattucci<br>
+ * 			  Tommaso Giannecchini<br>
+ * 			  Federico Massanti<br>
+ * 			  Lorenzo Rapposelli<br>
+ * 			  Giacomo Diridoni</i>
+ *
+ */ 
 public class Prodotto {
 
     private final int ID_PRODOTTO;
@@ -17,15 +25,16 @@ public class Prodotto {
     private Cliente venditore;
     
     private boolean inVendita = false;
+    
     /**
-     * Crea un prodotto
-     * @param iD_PRODOTTO
-     * @param nome
-     * @param descrizione
-     * @param prezzoDiBase
-     * @param venduto
-     * @param dataOra_aggiunta
-     * @throws InvalidAttributesException
+     * Costruttore classe Prodotto
+     * @param iD_PRODOTTO -> ID del prodotto
+     * @param nome -> nome del prodotto
+     * @param descrizione -> descrizione del prodotto
+     * @param prezzoDiBase -> prezzo di base del prodotto
+     * @param venduto -> flag che ci dice se è venduto o no
+     * @param dataOra_aggiunta -> Data/Ora aggiunta del prodotto nel DB
+     * @throws InvalidAttributesException -> Eccezioni lanciate
      */
     public Prodotto(int ID_PRODOTTO, String nome, String descrizione, float prezzoDiBase, boolean venduto,
             Cliente venditore, Timestamp dataOra_aggiunta, String categoria) throws InvalidAttributesException {
@@ -41,6 +50,8 @@ public class Prodotto {
         this.categoria=categoria;
     }
 
+    /*GETTERS AND SETTERS*/
+    
     public int getID_PRODOTTO() {
         return ID_PRODOTTO;
     }

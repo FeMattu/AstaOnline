@@ -1,8 +1,16 @@
 package classi;
 
 import java.sql.Date;
-import java.time.LocalDate;
 
+/**
+ * <b>Classe Cliente</b>
+ * @author <i>Federico Mattucci<br>
+ * 			  Tommaso Giannecchini<br>
+ * 			  Federico Massanti<br>
+ * 			  Lorenzo Rapposelli<br>
+ * 			  Giacomo Diridoni</i>
+ *
+ */ 
 public class Cliente {
 	private final String USERNAME;
 	private String nome;
@@ -13,14 +21,14 @@ public class Cliente {
 	private String email;
 	
 	/**
-	 * fa nascere una persona (quello che direbbe il loco AH AH AH, per il gianne
+	 * Costruttore classe Cliente
 	 * )
-	 * @param CODICE_FISCALE Codice fiscale del cliente
-	 * @param nome nome del cliente
-	 * @param cognome cognome del cliente
-	 * @param data_nascita data di nascita del cliente
-	 * @param residenza residenza del cliente
-	 * @param email E-mail del cliente
+	 * @param CODICE_FISCALE -> Codice fiscale del cliente
+	 * @param nome -> Nome del cliente
+	 * @param cognome -> Cognome del cliente
+	 * @param data_nascita -> Data di nascita del cliente
+	 * @param residenza -> Residenza del cliente
+	 * @param email -> E-mail del cliente
 	 */
 	public Cliente(String USERNAME, String nome, String cognome, Date data_nascita, String residenza,
 			String password, String email) {
@@ -34,6 +42,8 @@ public class Cliente {
 		this.email = email;
 	}
 	
+	/*GETTERS AND SETTERS*/
+		
 	public Cliente (String USERNAME) {
 		this.USERNAME = USERNAME;
 	}

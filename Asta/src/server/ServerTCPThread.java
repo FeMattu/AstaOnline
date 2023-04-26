@@ -16,7 +16,7 @@ import classi.Cliente;
 import classi.Prodotto;
 
 /**
- * <b>ServerTCPThread class</b>
+ * <b>Classe ServerTCPThread</b>
  * 
  * @author <i>Federico Mattucci<br>
  *         Tommaso Giannecchini<br>
@@ -35,10 +35,10 @@ public class ServerTCPThread extends Thread {
 	private Cliente utente;
 
 	/**
-	 * <b>ServerTCPThread constructor</b>
+	 * Costruttore classe ServerTCPThread
 	 * 
-	 * @param socket    -> socket used for the connection
-	 * @param resources -> resources istance
+	 * @param socket -> socket passata per la connessione
+	 * @param resources -> risorse passate come parametro
 	 */
 	public ServerTCPThread(Socket socket, Resources resources) {
 		this.socket = socket;
@@ -53,7 +53,7 @@ public class ServerTCPThread extends Thread {
 	}
 
 	/**
-	 * <b>Run method for ServerTCPThread class</b>
+	 * Metodo run della classe ServerTCPThread
 	 */
 	@Override
 	public void run() {
@@ -86,6 +86,8 @@ public class ServerTCPThread extends Thread {
 					if (validazioneAstaScelta(idAstaScelta, aste)) {
 						System.out.println("---\nClient ha accesso all'asta.");
 						Asta a = getAstaScelta(idAstaScelta, aste);
+						//ThreadAstaServer t = resources.getThreadByAsta(a);
+						//t.start();
                         writer.writeBytes(a.getIp()+":"+a.getProdotto().getPrezzoDiBase()+"\n");
 						
 						//MANDARE LE INFO A ThreadAstaClient.java per la connessione con socket multicast
@@ -123,6 +125,11 @@ public class ServerTCPThread extends Thread {
 
 	}
 
+	/**
+	 * Metodo per la validazione dell'accesso
+	 * @param access -> Stringa identificativa di colui che vuole accedere
+	 * @return -> true se loggato, false altrimenti
+	 */
 	private boolean validazioneAccesso(String access) {
 		String[] parametri = access.split(":");
 		if (parametri.length == 2) {
@@ -142,26 +149,11 @@ public class ServerTCPThread extends Thread {
 	}
 
 	/**
-	 * invia le informazioni sulle aste attive al client con il seguente formato:
-	 * id_asta:nomeProdotto:categoria:prezzoCorrente;
-	 * 
-	 * @return
+	 * Metodo per validazione dell'indice dell'asta scelta
+	 * @param id -> ID scelto in input
+	 * @param aste -> Lista di aste correnti
+	 * @return -> true se esiste una corrispondenza, false altrimenti
 	 */
-	private boolean sendAste() {
-		List<Asta> currentGambits = resources.getCurrentGambits();
-		try {
-			for (Asta asta : currentGambits) {
-				Prodotto p = asta.getProdotto();
-				writer.writeBytes(asta.getId_asta() + ":" + p.getNome() + ":" + p.getCategoria() + ":"
-						+ asta.getPrezzoCorrente());
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return false;
-	}
-
 	private boolean validazioneAstaScelta(int id, List<Asta> aste) {
 		for (int i = 0; i < aste.size(); i++) {
 			if (aste.get(i).getId_asta() == id) {
@@ -171,6 +163,12 @@ public class ServerTCPThread extends Thread {
 		return false;
 	}
 	
+	/**
+	 * Metodo che ritorna l'asta con ID quello preso in input
+	 * @param id -> ID preso in input
+	 * @param aste -> Lista di aste correnti dalla quale prelevare l'asta da ritornare
+	 * @return -> istanza di classe Asta alla quale vogliamo collegarci
+	 */
 	private Asta getAstaScelta(int id, List<Asta> aste) {
 		for (int i = 0; i < aste.size(); i++) {
 			if (aste.get(i).getId_asta() == id) {

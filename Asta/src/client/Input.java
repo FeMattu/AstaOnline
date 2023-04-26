@@ -7,15 +7,19 @@ import java.net.MulticastSocket;
 import java.sql.Timestamp;
 import java.util.Scanner;
 
-import classi.Asta;
-import classi.Cliente;
 import classi.Offerta;
 
 // Per scelta progettuale input e invio dei dati viene fatto tutto assieme per velocizzare. Questo perchè una volta terminato l'input deve essere mandato immediatamente
 
 /**
- * Classe che gestisce l'input del client e inviare i dati
- */
+ * <b>Classe Input</b>
+ * @author <i>Federico Mattucci<br>
+ * 			  Tommaso Giannecchini<br>
+ * 			  Federico Massanti<br>
+ * 			  Lorenzo Rapposelli<br>
+ * 			  Giacomo Diridoni</i>
+ *
+ */ 
 public class Input extends Thread {
 	private AstaDataClient datiAsta;
 	private MulticastSocket socket;
@@ -25,11 +29,11 @@ public class Input extends Thread {
 	Scanner t;
 	
 	/**
-	 * Costruttore della classe
+	 * Costruttore della classe Input
 	 * 
-	 * @param datiAsta Asta per cui vengono prese le offerte
-	 * @param socket Socket su cui mandare i dati
-	 * @param inetAddress Indirizzo su cui mandare i dati
+	 * @param datiAsta -> Asta per cui vengono prese le offerte
+	 * @param socket -> Socket su cui mandare i dati
+	 * @param inetAddress -> Indirizzo su cui mandare i dati
 	 */
 	public Input(AstaDataClient datiAsta, MulticastSocket socket, InetAddress inetAddress) {
 		this.datiAsta = datiAsta;
@@ -38,6 +42,9 @@ public class Input extends Thread {
 		this.multicastPort = 5550;	// Porta su cui mandare l'offerta
 	}
 	
+	/**
+	 * Metodo run classe Input
+	 */
 	public void run() {
 		
 		this.t = new Scanner(System.in);
@@ -48,12 +55,11 @@ public class Input extends Thread {
 			
 			if (!this.datiAsta.isEnded()) {
 				int offerta = Integer.parseInt(input);
-				Cliente offerente = null;	// ME STESSO
 				
 				// Invio il pacchetto
 				
 				// public Offerta(float offerta, Cliente offerente, Asta asta, Timestamp dataOraOfferta){
-				byte[] datiPacchetto = new Offerta(offerta, offerente,new Timestamp(System.currentTimeMillis())).toString().getBytes();
+				byte[] datiPacchetto = new Offerta(offerta, this.datiAsta.getMeStesso(),new Timestamp(System.currentTimeMillis())).datiDaInviare().getBytes();
 					// da vedere il timestamp
 				
 				DatagramPacket pacchetto = new DatagramPacket(datiPacchetto, datiPacchetto.length, this.inetAddress, multicastPort);

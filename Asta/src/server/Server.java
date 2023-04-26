@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 /**
- * <b>Server class</b>
+ * <b>Classe Server</b>
  * @author <i>Federico Mattucci<br>
  * 			  Tommaso Giannecchini<br>
  * 			  Federico Massanti<br>
@@ -16,6 +16,10 @@ import java.net.UnknownHostException;
  *
  */ 
 public class Server {
+	/**
+	 * Metodo main classe Server
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		Resources resources = null;
 		GestisciAste gestioneAste = null;

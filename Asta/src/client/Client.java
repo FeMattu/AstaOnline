@@ -41,7 +41,7 @@ public class Client {
 			e.printStackTrace();
 		}
 
-		System.out.println("Connessionu al server...");
+		System.out.println("Connessione al server...");
 		// Se non viene effettuato l'accesso al server il programma termina
 		if (!accessoServer()) {
 			try {
@@ -104,8 +104,8 @@ public class Client {
 		int scelta = -1;
 		while (true) {
 			System.out.println("1 -> Accedi");
-			System.out.println("2 -> registrati");
-			System.out.println("0 -> exit");
+			System.out.println("2 -> Registrati");
+			System.out.println("0 -> Esci");
 			System.out.print("Scelta: ");
 			scelta = scanner.nextInt();
 			switch (scelta) {
@@ -186,7 +186,7 @@ public class Client {
 	}
 
 	private static void partecipaAdUnAsta() throws IOException {
-		System.out.println("---\nElenco aste a cui puoi partecipare:");
+		System.out.println("---\nElenco aste a cui puoi partecipare:\n");
 		String asta = reader.readLine();
 		while (!asta.equals("OK")) {
 			System.out.println(asta);
